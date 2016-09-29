@@ -2,4 +2,15 @@
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
 	co = checkout
 	cob = checkout -b
-	bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f"
+	bclean = "!/bin/bash -c 'branches=$(git branch --merged ${1-master} | grep -v " ${1-master}$"); if [ ! -z "${branches}" ]; then   echo "${branches}" | xargs git branch -d; else echo "No branches to cleanup"; fi'"
+	pp = pull --prune
+	ppc = !git pp && git bclean
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	required = true
+	clean = git-lfs clean -- %f
+[diff]
+	tool = meld
+
+
+

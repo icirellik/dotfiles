@@ -1,0 +1,9 @@
+#!/bin/bash
+
+branches=$(git branch --merged ${1-master} | grep -v " ${1-master}$")
+
+if [ ! -z "${branches}" ]; then
+  echo "${branches}" | xargs git branch -d
+else
+  echo "No branches to cleanup"
+fi

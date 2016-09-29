@@ -7,11 +7,6 @@
 # ssh'ed in, should work fine with other setups.
 #
 # Requires tput and git.  See CUSTOMIZE comments to configure for your hosts, domains, etc.
-#
-# Generally works well, occasionally has issues with editing after Ctrl/R - if you get this, refresh
-# bash's command line display with Ctrl/L (patches welcome).
-#
-# (C) 2013, RichVel @ github - license is BSD 2-Clause, http://opensource.org/licenses/BSD-2-Clause
 
 # CUSTOMIZE: set to hostname prefixes for your servers
 case "$HOSTNAME" in
@@ -165,6 +160,16 @@ function per_prompt_command {
     # history_sync
 }
 export PROMPT_COMMAND=per_prompt_command
+export EDITOR=vim
 
-source ~/.bashrc
-source ~/.dockerfunc
+if [ -f ~/.bashrc ]; then
+   source ~/.bashrc
+fi
+
+if [ -f ~/.dockerfunc ]; then
+   source ~/.dockerfunc
+fi
+
+if [ -f ~/.gitfunc ]; then
+   source ~/.gitfunc
+fi

@@ -33,11 +33,80 @@ relies_on(){
 }
 heureka-postgres(){
 
-	del_stopped heureka-postgres
+    del_stopped postgres
 
-	docker run --name heureka-postgres \
-		-e POSTGRES_PASSWORD=heureka \
-		-p 5432:5432 \
-		postgres
+    docker run --name postgres \
+        -e POSTGRES_PASSWORD=heureka \
+        -p 5432:5432 \
+        postgres
 
+}
+
+heureka-interrogate() {
+
+    del_stopped interrogate
+
+#ep_development_local_j3rXZaafkujqOi5wQs0LyW8DLcSCvwb9D
+
+
+    docker run --rm -it --name interrogate \
+        -e HEUREKA_COMMUNICATION_API_URL="http://192.168.2.125:8336" \
+        -e HEUREKA_DATABASE_IP=postgres \
+        -e HEUREKA_DATABASE_NAME=core \
+        -e HEUREKA_DATABASE_PORT=5432 \
+        -e HEUREKA_DATABASE_USERNAME=postgres \
+        -e HEUREKA_ENDPOINT_API_BUILD=local \
+        -e HEUREKA_ENDPOINT_API_PARTITION=development \
+        -e HEUREKA_ENDPOINT_API_URL="http://192.168.2.125:8335" \
+        -e HEUREKA_INTERROGATE_SERVICE_CODE=ig \
+        -e HEUREKA_INTERROGATE_SERVICE_KEY=vDERvKncKUwvfAexSMtbpyTavu5kjR5HY \
+        -e HEUREKA_KEYSTONE_API_URL="http://192.168.2.125:8337" \
+        -e HEUREKA_ORG_CLIENT_KEY=j3rXZaafkujqOi5wQs0LyW8DLcSCvwb9D \
+        -p 8080:8080 --link postgres:postgres interrogate
+
+}
+
+kube-project(){
+    gcloud config set project $1
+}
+
+heureka-dev(){
+    kube-project heureka-cloud-dev
+}
+
+heureka-poc(){
+    kube-project heureka-cloud-poc
+}
+
+heureka-prod(){
+    kube-project heureka-cloud-prod
+}
+
+kube-dev(){
+    heureka-dev
+    gcloud container clusters get-credentials heureka-dev --zone us-central1-b
+}
+
+kube-ci(){
+    heureka-dev
+    gcloud container clusters get-credentials heureka-ci --zone us-central1-b
+}
+
+kube-demo(){
+    heureka-poc
+    gcloud container clusters get-credentials heureka-demo --zone us-central1-b
+}
+
+kube-prod(){
+    heureka-prod
+    gcloud container clusters get-credentials heureka-prod --zone us-central1-b
+}
+
+heureka-login(){
+    docker login -u _token -p "$(gcloud auth print-access-token)" https://us.gcr.io
+}
+
+reset-wifi(){
+    sudo rmmod wl
+    sudo modprobe wl
 }
