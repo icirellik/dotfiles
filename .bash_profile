@@ -155,9 +155,6 @@ function per_prompt_command {
     # Do the prompt
     PS1="$(bash_prompt)"
     PS1="$PS1"
-
-    # CUSTOMIZE: Uncomment this if you want to sync history on every prompt, across multiple windows (see above)
-    # history_sync
 }
 export PROMPT_COMMAND=per_prompt_command
 export EDITOR=vim
