@@ -46,9 +46,6 @@ heureka-interrogate() {
 
     del_stopped interrogate
 
-#ep_development_local_j3rXZaafkujqOi5wQs0LyW8DLcSCvwb9D
-
-
     docker run --rm -it --name interrogate \
         -e HEUREKA_COMMUNICATION_API_URL="http://192.168.2.125:8336" \
         -e HEUREKA_DATABASE_IP=postgres \
