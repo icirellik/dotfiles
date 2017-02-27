@@ -1,0 +1,3 @@
+Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
+Plugin 'bling/vim-airline'
+Bundle 'edkolev/promptline.vim'
