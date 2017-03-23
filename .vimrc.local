@@ -1,4 +1,4 @@
-set nocursorline " don't highlight current line
+" set nocursorline " don't highlight current line
 
 " keyboard shortcuts
 inoremap jj <ESC>
