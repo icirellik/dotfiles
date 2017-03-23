@@ -13,5 +13,3 @@ unset file
 
 # Source completion files
 for f in ~/.bash_completion.d/*; do source $f; done
-
-export PATH=$PATH:~/bin
