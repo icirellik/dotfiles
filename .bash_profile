@@ -12,6 +12,6 @@ done
 unset file
 
 # Source completion files
-for f in ~/.bash_completion/*; do source $f; done
+for f in ~/.bash_completion.d/*; do source $f; done
 
 export PATH=$PATH:~/bin
