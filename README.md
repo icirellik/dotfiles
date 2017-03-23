@@ -1,5 +1,7 @@
 # My Dotfiles
 
+[![Travis CI](https://travis-ci.org/icirellik/dotfiles.svg?branch=master)](https://travis-ci.org/icirellik/dotfiles)
+
 Buyer beware
 
 ## Command Line Tools
