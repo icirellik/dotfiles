@@ -48,7 +48,7 @@ heureka-run-interrogate() {
 
 
 kube-project(){
-    gcloud config set project $1
+    gcloud config set project "$1"
 }
 
 heureka-dev(){

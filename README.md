@@ -4,11 +4,13 @@ Buyer beware
 
 ## Command Line Tools
 
-ag
-ranger
-rxvt
-uncrustify
-wavemon
+sudo apt-get install -y \
+    ranger \
+    rxvt \
+    shellcheck \
+    silversearcher-ag \
+    uncrustify \
+    wavemon
 
 ## Manual Install
 
