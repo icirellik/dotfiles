@@ -1,6 +1,6 @@
-.PHONY: all bin dotfiles etc test shellcheck
+.PHONY: all bin dotfiles etc test tools shellcheck
 
-all: bin dotfiles etc
+all: bin dotfiles etc tools
 
 bin:
 	# add aliases for things in bin
@@ -26,6 +26,22 @@ etc:
 	sudo systemctl daemon-reload
 
 test: shellcheck
+
+tools:
+	if [ ! -d "$(HOME)/tools" ]; then \
+		mkdir $(HOME)/tools; \
+	fi;
+	# Install Google Cloud SDK
+	if [ ! -d "$(HOME)/tools/google-cloud-sdk" ]; then \
+		curl https://sdk.cloud.google.com | bash -s -- --disable-prompts --install-dir=$(HOME)/tools; \
+	fi;
+	# Install node
+	if [ ! -d "$(HOME)/tools/node" ]; then \
+		curl -s -o /tmp/node-v7.8.0-linux-x64.tar.xz https://nodejs.org/dist/v7.8.0/node-v7.8.0-linux-x64.tar.xz; \
+		tar xf /tmp/node-v7.8.0-linux-x64.tar.xz -C $(HOME)/tools; \
+		ln -sf $(HOME)/tools/node-v7.8.0-linux-x64 $(HOME)/tools/node; \
+		rm -f /tmp/node-v7.8.0-linux-x64.tar.xz; \
+	fi;
 
 # if this session isn't interactive, then we don't want to allocate a
 # TTY, which would fail, but if it is interactive, we do want to attach

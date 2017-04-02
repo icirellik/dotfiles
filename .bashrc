@@ -124,10 +124,10 @@ if [[ -f "${HOME}/.bash_profile" ]]; then
 fi
 
 # The next line updates PATH for the Google Cloud SDK.
-source '/home/digerati/google-cloud-sdk/path.bash.inc'
+source "$HOME/tools/google-cloud-sdk/path.bash.inc"
 
 # The next line enables shell command completion for gcloud.
-source '/home/digerati/google-cloud-sdk/completion.bash.inc'
+source "$HOME/tools/google-cloud-sdk/completion.bash.inc"
 
 export PATH=$PATH:$HOME/tools/flyway/
 
