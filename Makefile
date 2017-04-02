@@ -28,6 +28,10 @@ etc:
 test: shellcheck
 
 tools:
+	if [ ! -d "$(HOME)/.vim/bundle" ]; then \
+		git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim; \
+		vim +PluginInstall +qall; \
+	fi;
 	if [ ! -d "$(HOME)/tools" ]; then \
 		mkdir $(HOME)/tools; \
 	fi;

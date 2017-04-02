@@ -2,12 +2,6 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-export NODE="$HOME/tools/node/bin/node"
-export NODE_PATH="$HOME/tools/node/lib/node_modules"
-export NODE_ENV="development"
-export PATH="$HOME/tools/node/bin:$PATH"
-export PATH="$HOME/git-commands:$PATH"
-
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -121,6 +115,21 @@ export EDITOR=vim
 if [[ -f "${HOME}/.bash_profile" ]]; then
     # shellcheck source=/dev/null
     source "${HOME}/.bash_profile"
+fi
+
+# use a tty for gpg
+# solves error: "gpg: signing failed: Inappropriate ioctl for device"
+GPG_TTY=$(tty)
+export GPG_TTY
+# Start the gpg-agent if not already running
+if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
+  gpg-connect-agent /bye >/dev/null 2>&1
+  gpg-connect-agent updatestartuptty /bye >/dev/null
+fi
+# Set SSH to use gpg-agent
+unset SSH_AGENT_PID
+if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+  export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
 fi
 
 # The next line updates PATH for the Google Cloud SDK.
