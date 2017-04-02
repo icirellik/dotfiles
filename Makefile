@@ -1,6 +1,6 @@
-.PHONY: all bin dotfiles etc test tools shellcheck
+.PHONY: all bin dotfiles etc test tools shellcheck usr
 
-all: bin dotfiles etc tools
+all: bin dotfiles etc usr tools
 
 bin:
 	# add aliases for things in bin
@@ -19,13 +19,21 @@ dotfiles:
 	ln -sfn $(CURDIR)/.gnupg/gpg-agent.conf $(HOME)/.gnupg/gpg-agent.conf;
 
 etc:
-	echo "etc"
-#   for file in $(shell find $(CURDIR)/etc -type f -not -name ".*.swp"); do \
-#     f=$$(echo $$file | sed -e 's|$(CURDIR)||'); \
-#     sudo ln -f $$file $$f; \
-#   done
-	systemctl --user daemon-reload
-	sudo systemctl daemon-reload
+	echo "etc";
+	for file in $(shell find $(CURDIR)/etc -type f -not -name ".*.swp"); do \
+		f=$$(echo $$file | sed -e 's|$(CURDIR)||'); \
+		sudo ln -sf $$file $$f; \
+	done; \
+	systemctl --user daemon-reload;
+	sudo systemctl daemon-reload;
+
+usr:
+	for file in $(shell find $(CURDIR)/usr -type f -not -name ".*.swp"); do \
+		f=$$(echo $$file | sed -e 's|$(CURDIR)||'); \
+		sudo ln -sf $$file $$f; \
+	done; \
+	systemctl --user daemon-reload;
+	sudo systemctl daemon-reload;
 
 test: shellcheck
 
