@@ -12,4 +12,7 @@ done
 unset file
 
 # Source completion files
-for f in ~/.bash_completion.d/*; do source $f; done
+for f in ~/.bash_completion.d/*; do
+  # shellcheck source=/dev/null
+  source "$f"
+done
