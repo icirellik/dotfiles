@@ -51,6 +51,13 @@ tools:
 		ln -sf $(HOME)/tools/node-v7.8.0-linux-x64 $(HOME)/tools/node; \
 		rm -f /tmp/node-v7.8.0-linux-x64.tar.xz; \
 	fi;
+	# Install flyway
+	if [ ! -d "$(HOME)/tools/flyway" ]; then \
+		curl -s -o /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/4.1.2/flyway-commandline-4.1.2-linux-x64.tar.gz; \
+		tar xf /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz -C $(HOME)/tools; \
+		ln -sf $(HOME)/tools/flyway-4.1.2 $(HOME)/tools/flyway; \
+		rm -f /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz; \
+	fi;
 
 # if this session isn't interactive, then we don't want to allocate a
 # TTY, which would fail, but if it is interactive, we do want to attach
