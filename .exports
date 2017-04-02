@@ -35,7 +35,3 @@ export DOCKER_CONTENT_TRUST=0
 export NODE="$HOME/tools/node/bin/node"
 export NODE_PATH="$HOME/tools/node/lib/node_modules"
 export NODE_ENV="development"
-export PATH="$HOME/tools/node/bin:$PATH"
-
-# Additional git commands
-export PATH="$HOME/git-commands:$PATH"

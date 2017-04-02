@@ -133,15 +133,3 @@ if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
 fi
 # add alias for ssh to update the tty
 alias ssh="gpg-connect-agent updatestartuptty /bye >/dev/null; ssh"
-
-# The next line updates PATH for the Google Cloud SDK.
-source "$HOME/tools/google-cloud-sdk/path.bash.inc"
-
-# The next line enables shell command completion for gcloud.
-source "$HOME/tools/google-cloud-sdk/completion.bash.inc"
-
-export PATH=$PATH:$HOME/tools/flyway/
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/digerati/.sdkman"
-[[ -s "/home/digerati/.sdkman/bin/sdkman-init.sh" ]] && source "/home/digerati/.sdkman/bin/sdkman-init.sh"

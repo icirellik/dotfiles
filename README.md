@@ -4,6 +4,25 @@
 
 Buyer beware
 
+## Installation
+
+```sh
+$ make
+```
+
+Install tmux plugins, this is currently manual.
+
+```sh
+$ tmux
+# prefix-key, I
+```
+
+Run shellcheck tests
+
+```sh
+$ make test
+```
+
 ## Command Line Tools
 
 sudo apt-get install -y \
@@ -14,13 +33,16 @@ sudo apt-get install -y \
     uncrustify \
     wavemon
 
-## Manual Install
+## NPM Tools
 
-ln -s $(pwd)/.bash_completion.d ~/.bash_completion.d
-ln -s $(pwd)/.bash_profile ~/.bash_profile
-ln -s $(pwd)/.bash_prompt ~/.bash_prompt
-ln -s $(pwd)/.bashrc ~/.bashrc
-ln -s $(pwd)/.exports ~/.exports
-ln -s $(pwd)/.todo ~/.todo
-ln -s $(pwd)/bin ~/bin
+npm install -g \
+  gulp \
+  git-run
 
+## Help
+
+Sometimes in tmux you need to update the GPG_TTY
+
+```sh
+$ export GPG_TTY=$(tty)
+```
