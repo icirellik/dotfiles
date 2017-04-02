@@ -15,6 +15,8 @@ dotfiles:
 		f=$$(basename $$file); \
 		ln -sfn $$file $(HOME)/$$f; \
 	done;
+	ln -sfn $(CURDIR)/.gnupg/gpg.conf $(HOME)/.gnupg/gpg.conf;
+	ln -sfn $(CURDIR)/.gnupg/gpg-agent.conf $(HOME)/.gnupg/gpg-agent.conf;
 
 etc:
 	echo "etc"
@@ -32,6 +34,9 @@ tools:
 		git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim; \
 		vim +PluginInstall +qall; \
 	fi;
+	if [ ! -d "$(HOME)/.tmux/plugins/tpm" ]; then \
+		git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm; \
+	fi
 	if [ ! -d "$(HOME)/tools" ]; then \
 		mkdir $(HOME)/tools; \
 	fi;
