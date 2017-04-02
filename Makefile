@@ -15,6 +15,8 @@ dotfiles:
 		f=$$(basename $$file); \
 		ln -sfn $$file $(HOME)/$$f; \
 	done;
+	ln -sfn $(CURDIR)/.gnupg/gpg.conf $(HOME)/.gnupg/gpg.conf;
+	ln -sfn $(CURDIR)/.gnupg/gpg-agent.conf $(HOME)/.gnupg/gpg-agent.conf;
 
 etc:
 	echo "etc"
