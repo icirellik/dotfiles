@@ -34,6 +34,9 @@ tools:
 		git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim; \
 		vim +PluginInstall +qall; \
 	fi;
+	if [ ! -d "$(HOME)/.tmux/plugins/tpm" ]; then \
+		git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm; \
+	fi
 	if [ ! -d "$(HOME)/tools" ]; then \
 		mkdir $(HOME)/tools; \
 	fi;
