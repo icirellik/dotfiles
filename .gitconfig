@@ -1,9 +1,89 @@
 [alias]
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
-	co = checkout
-	cob = checkout -b
-	bclean = "!/bin/bash -c 'branches=$(git branch --merged ${1-master} | grep -v " ${1-master}$"); if [ ! -z "${branches}" ]; then for branch in ${branches}; do git branch -d ${branch}; done; else echo "No branches to cleanup"; fi'"
-	pp = pull --prune
-	ppc = !git pp && git bclean
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+  co = checkout
+  cob = checkout -b
+  bclean = "!/bin/bash -c 'branches=$(git branch --merged ${1-master} | grep -v " ${1-master}$"); if [ ! -z "${branches}" ]; then for branch in ${branches}; do git branch -d ${branch}; done; else echo "No branches to cleanup"; fi'"
+  pp = pull --prune
+  ppc = !git pp && git bclean
+
+
+[apply]
+
+  # Detect whitespace errors when applying a patch
+  whitespace = fix
+
+[core]
+
+  # Use custom `.gitignore` and `.gitattributes`
+  excludesfile = ~/.gitignore
+  attributesfile = ~/.gitattributes
+
+  # Treat spaces before tabs and all kinds of trailing whitespace as an error
+  # [default] trailing-space: looks for spaces at the end of a line
+  # [default] space-before-tab: looks for spaces before tabs at the beginning of a line
+  whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+
+  # Make `git rebase` safer on OS X
+  # More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
+  # trustctime = false
+  editor = vim
+
+[color]
+
+  # Use colors in Git commands that are capable of colored output when
+  # outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
+  ui = auto
+
+[color "branch"]
+
+  current = yellow reverse
+  local = yellow
+  remote = green
+
+[color "diff"]
+
+  meta = yellow bold
+  frag = magenta bold # line info
+  old = red # deletions
+  new = green # additions
+
+[color "status"]
+
+  added = yellow
+  changed = green
+  untracked = cyan
+
 [diff]
-	tool = meld
+
+	# Detect copies as well as renames
+	renames = copies
+
+[help]
+
+	# Automatically correct and execute mistyped commands
+
+
+[diff]
+  tool = meld
+
+[user]
+  name = Cameron Rollheiser
+  email = icirellik@gmail.com
+  signingkey = 0x1780CF254F8B82DA
+
+# Uncomment if you want fetch to also get all github pull requests, this is rather
+# large on big repos.
+#[remote "origin"]
+  #fetch = +refs/pull/*/head:refs/remotes/origin/pull/*
+
+[github]
+	user = icirellik
+
+[commit]
+  gpgsign = true
+
+[http]
+  cookiefile = ~/.gitcookies
+
+[gpg]
+  program = gpg2
