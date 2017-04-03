@@ -17,6 +17,10 @@ $ tmux
 # prefix-key, I
 ```
 
+Restart your shell
+
+exec -l $SHELL
+
 Run shellcheck tests
 
 ```sh
@@ -31,7 +35,12 @@ sudo apt-get install -y \
     shellcheck \
     silversearcher-ag \
     uncrustify \
-    wavemon
+    wavemon \
+    lm-sensors \
+    jq \
+    tree \
+    xclip \
+    ngrep
 
 ## NPM Tools
 
