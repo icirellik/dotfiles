@@ -55,3 +55,11 @@ Sometimes in tmux you need to update the GPG_TTY
 ```sh
 $ export GPG_TTY=$(tty)
 ```
+
+## Flyway
+
+https://flywaydb.org/
+
+## IntelliJ
+
+## Atom.io
