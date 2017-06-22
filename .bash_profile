@@ -16,3 +16,8 @@ for f in ~/.bash_completion.d/*; do
   # shellcheck source=/dev/null
   source "$f"
 done
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/$USER/.sdkman"
+# shellcheck source=/dev/null
+[[ -s "/home/$USER/.sdkman/bin/sdkman-init.sh" ]] && source "/home/$USER/.sdkman/bin/sdkman-init.sh"
