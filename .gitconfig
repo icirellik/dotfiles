@@ -7,8 +7,10 @@
   ppc = !git pp && git bclean
 
   # Reset a branch that may have been force pushed to the correct remote HEAD.
-  fpr = !git rev-parse --abbrev-ref HEAD | xargs -I {} /bin/bash -c 'git fetch origin {} && git reset --soft origin/{}' 
+  fpr = !git rev-parse --abbrev-ref HEAD | xargs -I {} /bin/bash -c 'git fetch origin {} && git reset --soft origin/{}'
 
+  # Apply a fix for GPG interactive tty's
+  cm-gpg = !GPG_TTY=$(tty) git commit
 
 [apply]
 
