@@ -69,6 +69,17 @@ tools:
 		ln -sf $(HOME)/tools/flyway-4.1.2 $(HOME)/tools/flyway; \
 		rm -f /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz; \
 	fi;
+	# Install syncthing
+	if [ ! -d "$(HOME)/tools/syncthing" ]; then \
+		curl -s -o /tmp/syncthing-linux-amd64-v0.14.31.tar.gz https://github.com/syncthing/syncthing/releases/download/v0.14.31/syncthing-linux-amd64-v0.14.31.tar.gz; \
+		tar xf /tmp/syncthing-linux-amd64-v0.14.31.tar.gz -C $(HOME)/tools; \
+		ln -sf $(HOME)/tools/syncthing-linux-amd64-v0.14.31 $(HOME)/tools/syncthing; \
+		rm -f /tmp/syncthing-linux-amd64-v0.14.31.tar.gz; \
+		ln -sf $(HOME)/tools/syncthing/syncthing /usr/local/bin/syncthing; \
+		sudo cp -f etc/systemd/system/syncthing@.service /etc/systemd/system/; \
+		sudo systemctl daemon-reload; \
+		sudo systemctl enable "syncthing@$$USER"; \
+	fi;
 
 # if this session isn't interactive, then we don't want to allocate a
 # TTY, which would fail, but if it is interactive, we do want to attach
