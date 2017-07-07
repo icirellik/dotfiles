@@ -71,14 +71,15 @@ tools:
 	fi;
 	# Install syncthing
 	if [ ! -d "$(HOME)/tools/syncthing" ]; then \
-		curl -s -o /tmp/syncthing-linux-amd64-v0.14.31.tar.gz https://github.com/syncthing/syncthing/releases/download/v0.14.31/syncthing-linux-amd64-v0.14.31.tar.gz; \
+		curl -L -s -o /tmp/syncthing-linux-amd64-v0.14.31.tar.gz https://github.com/syncthing/syncthing/releases/download/v0.14.31/syncthing-linux-amd64-v0.14.31.tar.gz; \
 		tar xf /tmp/syncthing-linux-amd64-v0.14.31.tar.gz -C $(HOME)/tools; \
 		ln -sf $(HOME)/tools/syncthing-linux-amd64-v0.14.31 $(HOME)/tools/syncthing; \
 		rm -f /tmp/syncthing-linux-amd64-v0.14.31.tar.gz; \
-		ln -sf $(HOME)/tools/syncthing/syncthing /usr/local/bin/syncthing; \
-		sudo cp -f etc/systemd/system/syncthing@.service /etc/systemd/system/; \
+		sudo ln -sf $(HOME)/tools/syncthing/syncthing /usr/local/bin/syncthing; \
+		sudo cp -f --remove-destination etc/systemd/system/syncthing@.service /etc/systemd/system/; \
 		sudo systemctl daemon-reload; \
 		sudo systemctl enable "syncthing@$$USER"; \
+		sudo systemctl start "syncthing@$$USER"; \
 	fi;
 
 # if this session isn't interactive, then we don't want to allocate a
