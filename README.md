@@ -30,17 +30,19 @@ $ make test
 ## Command Line Tools
 
 sudo apt-get install -y \
+    jq \
+    lm-sensors \
+    ngrep \
+    pinentry-curses \
     ranger \
     rxvt \
     shellcheck \
     silversearcher-ag \
+    sysstat \
+    tree \
     uncrustify \
     wavemon \
-    lm-sensors \
-    jq \
-    tree \
-    xclip \
-    ngrep
+    xclip
 
 ## NPM Tools
 
