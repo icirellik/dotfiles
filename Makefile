@@ -67,6 +67,9 @@ tools:
 		tar xf /tmp/node-v7.8.0-linux-x64.tar.xz -C $(HOME)/tools; \
 		ln -sf $(HOME)/tools/node-v7.8.0-linux-x64 $(HOME)/tools/node; \
 		rm -f /tmp/node-v7.8.0-linux-x64.tar.xz; \
+		npm install -g \
+		  gulp \
+		  git-run; \
 	fi;
 	# Install flyway
 	if [ ! -d "$(HOME)/tools/flyway" ]; then \

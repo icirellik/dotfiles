@@ -27,29 +27,6 @@ Run shellcheck tests
 $ make test
 ```
 
-## Command Line Tools
-
-sudo apt-get install -y \
-    jq \
-    lm-sensors \
-    ngrep \
-    pinentry-curses \
-    ranger \
-    rxvt \
-    shellcheck \
-    silversearcher-ag \
-    sysstat \
-    tree \
-    uncrustify \
-    wavemon \
-    xclip
-
-## NPM Tools
-
-npm install -g \
-  gulp \
-  git-run
-
 ## Help
 
 Sometimes in tmux you need to update the GPG_TTY
