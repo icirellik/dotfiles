@@ -8,13 +8,11 @@
 #
 # Requires tput and git.  See CUSTOMIZE comments to configure for your hosts, domains, etc.
 
-# CUSTOMIZE: set to hostname prefixes for your servers
-case "$HOSTNAME" in
-    *)               sysmode=Local;;
-esac
-if [ "$SIMULATE_PROD" = "yes" ]; then
-    sysmode=PROD
-fi
+if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
+  export TERM='gnome-256color';
+elif infocmp xterm-256color >/dev/null 2>&1; then
+  export TERM='xterm-256color';
+fi;
 
 # ======== History setup - optional ===============
 #
@@ -23,58 +21,53 @@ fi
 # will sometimes be surprising on returning to a terminal window!
 # history_sync: After every command, append latest commands to hist file, then clear shell history, and re-read all from file
 history_sync() {
-    history -a; history -c; history -r;
+  history -a; history -c; history -r;
 }
 shopt -s histappend                         # Append rather than overwrite
 
 # ======== Prompt setup ===========================
 #
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
 # Expand any symbolic links in the specified pathname and convert to absolute path
 function realpath() {
-    f=$@
-    if [ -d "$f" ]; then
-        base=""
-        dir="$f"
-    else
-        base="/$(basename "$f")"
-        dir=$(dirname "$f")
-    fi
+  f=$@
+  if [ -d "$f" ]; then
+    base=""
+    dir="$f"
+  else
+    base="/$(basename "$f")"
+    dir=$(dirname "$f")
+  fi
 
-    dir=$(cd "$dir" && /bin/pwd)
-    echo "$dir$base"
+  dir=$(cd "$dir" && /bin/pwd)
+  echo "$dir$base"
 }
 
 # Set prompt path to max 2 levels for best compromise of readability and usefulness
 promptpath () {
-    realpwd=$(realpath $PWD)          # Absolute path
-    realhome=$(realpath $HOME)
+  realpwd=$(realpath $PWD)          # Absolute path
+  realhome=$(realpath $HOME)
 
-    # if we are in the home directory, show tilde if possible
-    if echo $realpwd | grep -q "^$realhome"; then
-        path=$(echo $realpwd | sed "s|^$realhome|\~|")
-        if [ "$path" = "~" ] || [ "$(dirname "$path")" = "~" ]; then
-            echo $path
-        else
-            echo $(basename $(dirname "$path"))/$(basename "$path")
-        fi
-        return
-    fi
-
-    path_dir=$(dirname $PWD)
-    # if our parent dir is a top-level directory, don't mangle it
-    if [ $(dirname $path_dir) = "/" ]; then
-        echo $PWD
+  # if we are in the home directory, show tilde if possible
+  if echo $realpwd | grep -q "^$realhome"; then
+    path=$(echo $realpwd | sed "s|^$realhome|\~|")
+    if [ "$path" = "~" ] || [ "$(dirname "$path")" = "~" ]; then
+      echo $path
     else
-        path_parent=$(basename "$path_dir")
-        path_base=$(basename "$PWD")
-
-        echo $path_parent/$path_base
+      echo $(basename $(dirname "$path"))/$(basename "$path")
     fi
+    return
+  fi
+
+  path_dir=$(dirname $PWD)
+  # if our parent dir is a top-level directory, don't mangle it
+  if [ $(dirname $path_dir) = "/" ]; then
+    echo $PWD
+  else
+    path_parent=$(basename "$path_dir")
+    path_base=$(basename "$PWD")
+
+    echo $path_parent/$path_base
+  fi
 }
 
 
@@ -92,68 +85,135 @@ magenta="$bold\[$(tput setaf 5)\]"
 yellow="$bold\[$(tput setaf 3)\]"
 cyan="$bold\[$(tput setaf 6)\]"
 
-# Output bash prompt, run after every command - output of script is PS1 value, with all values expanded
-function bash_prompt() {
-    promptpath=$(promptpath)
-    branch=""
-    git branch >/dev/null 2>&1
-    if [[ $? == 0 ]]; then
-        branch=$(git branch 2>/dev/null | grep '^*' |  cut -d " " -f 2)
+prompt_git() {
+  local s='';
+  local branchName='';
+
+  # Check if the current directory is in a Git repository.
+  if [ "$(git rev-parse --is-inside-work-tree &>/dev/null; echo "${?}")" == '0' ]; then
+
+    # check if the current directory is in .git before running git checks
+    if [ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" == 'false' ]; then
+
+      if [[ -O "$(git rev-parse --show-toplevel)/.git/index" ]]; then
+        git update-index --really-refresh -q &> /dev/null;
+      fi;
+
+      # Check for uncommitted changes in the index.
+      if ! git diff --quiet --ignore-submodules --cached; then
+        s+='+';
+      fi;
+
+      # Check for unstaged changes.
+      if ! git diff-files --quiet --ignore-submodules --; then
+        s+='!';
+      fi;
+
+      # Check for untracked files.
+      if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+        s+='?';
+      fi;
+
+      # Check for stashed files.
+      if git rev-parse --verify refs/stash &>/dev/null; then
+        s+='$';
+      fi;
+
+    fi;
+
+    # Get the short symbolic ref.
+    # If HEAD isn’t a symbolic ref, get the short SHA for the latest commit
+    # Otherwise, just give up.
+    branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null)"
+    if [[ -z "${branchName}" ]]; then
+      branchName="$(git rev-parse --short HEAD 2> /dev/null)"
+    fi
+    if [[ -z "${branchName}" ]]; then
+      branchName="unknown"
     fi
 
-    kubectl config view >/dev/null 2>&1
-    if [[ $? == 0 ]]; then
-        kube=`kubectl config view | grep current-context | cut -d : -f2 | cut -d _ -f 4`
+    [ -n "${s}" ] && s=" ${s}";
+
+    if [ "${branchName}" = "master" ]; then
+      branchName="${inverse}${red}${branchName}${uninverse}";
     fi
 
-    if [ ! -z ${kube} ]; then
-        kube=" (${kube})"
-    fi
-
-    specialpart="${USER}@local"
-    # Red prompt if production system
-    if [ $sysmode = 'PROD' ]; then
-        specialpart="$inverse$red$specialpart$uninverse"
-    fi
-    if [ $sysmode = 'Test' ]; then
-        specialpart="$magenta$specialpart"
-    fi
-    if [ $sysmode = 'Stage' ]; then
-        specialpart="$green$specialpart"
-    fi
-    if [ $sysmode = 'Dev' ]; then
-        specialpart="$cyan$specialpart"
-    fi
-
-    #  CUSTOMIZE: if not using Debian/Ubuntu (or you never use chroot), use the first version of this line
-    # prompt="$yellow${specialpart} ${branch:+$green[$branch] }$blue${promptpath}\$$black$reset "
-    lightning=""
-    if [ $sysmode != 'Local' ]; then
-        lightning="$yellow⚡ "
-    fi
-
-    if [ "$branch" = "master" ]; then
-      branch="$inverse$red$branch$uninverse$green";
-    fi
-    prompt="${debian_chroot:+($debian_chroot)}$yellow${specialpart}${kube} ${branch:+$green[$branch] }${lightning}$blue${promptpath}\$$black$reset "
-    echo -n "$prompt"
+    echo -e "${1}${green}[${branchName}${blue}${s}${green}] ";
+  else
+    return;
+  fi;
 }
+
+prompt_kube() {
+  local clusterName='';
+
+  # Check for kubectl.
+  if [[ $(command -v kubectl) ]]; then
+
+    if [[ $? == 0 ]]; then
+      kube="$(kubectl config view | grep current-context | cut -d : -f2 | cut -d _ -f 4)"
+    fi
+
+    [ -n "${kube}" ] && s=" (${kube})";
+
+    echo -e "${cyan}[${kube}] "
+  else
+    return;
+  fi;
+}
+
+# Output bash prompt, run after every command - output of script is PS1 value, with all values expanded
+bash_prompt() {
+  promptpath=$(promptpath)
+  branch=$(prompt_git)
+  kube=$(prompt_kube)
+  user="${USER} "
+  prompt="${yellow}${user}${kube}${branch}${lightning}${blue}${promptpath}\$${black}${reset} "
+  echo -n "${prompt}"
+}
+
+# Determine if we are in the cloud.
+cloud=""
+if grep -q "^flags.* hypervisor" /proc/cpuinfo ; then
+  cloud="☁️ "
+fi
+
+# Highlight the user name when logged in as root.
+if [[ "${USER}" == "root" ]]; then
+  userStyle="${red}";
+else
+  userStyle="${blue}";
+fi;
+
+# Highlight the hostname when connected via SSH.
+if [[ "${SSH_TTY}" ]]; then
+  hostStyle="${bold}${cyan}";
+else
+  hostStyle="${cyan}";
+fi;
+
+# Lightning character.
+if [ $sysmode != 'Local' ]; then
+  lightning="$yellow⚡ "
+else
+  lightning=""
+fi
 
 # Function called every time bash displays the prompt
 function per_prompt_command {
-    # Set the window title if a terminal window (Mac or Linux)
-    case "$TERM" in
-        xterm*|rxvt*)
-            if [ $sysmode = 'Local' ]; then
-                echo -ne "\033]0;["$sysmode"] "${USER}":"$(basename "$PWD")"\007"
-            fi
-            if [ $sysmode != 'Local' ]; then
-                echo -ne "\033]0;["$sysmode"] "${USER}":""$HOSTNAME""\007"
-            fi
-            ;;
-    esac
-    # Do the prompt
-    PS1="$(bash_prompt)"
-    PS1="$PS1"
+  # Set the window title if a terminal window (Mac or Linux)
+  case "$TERM" in
+    xterm*|rxvt*)
+      if [ $sysmode = 'Local' ]; then
+        echo -ne "\033]0;["$sysmode"] "${USER}":"$(basename "$PWD")"\007"
+      fi
+      if [ $sysmode != 'Local' ]; then
+        echo -ne "\033]0;["$sysmode"] "${USER}":""$HOSTNAME""\007"
+      fi
+      ;;
+  esac
+  # Do the prompt
+  PS1="$(bash_prompt)"
+  PS1="$PS1"
 }
 export PROMPT_COMMAND=per_prompt_command
