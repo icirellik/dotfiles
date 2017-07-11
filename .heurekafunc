@@ -7,7 +7,7 @@ heureka-postgres(){
     docker run --name postgres \
         -e POSTGRES_PASSWORD=heureka \
         -p 5432:5432 \
-        postgres
+        postgres:9.6
 
 }
 
