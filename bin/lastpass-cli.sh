@@ -1,6 +1,4 @@
 #!/bin/bash
-
-
 # Bash script installing lastpass cli.
 #
 # Author: Cameron Rollheiser <icirellik@gmail.com>
@@ -30,4 +28,4 @@ sudo make install
 sudo make install-doc
 )
 
-# rm -rf lastpass-cli
+rm -rf lastpass-cli
