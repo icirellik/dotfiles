@@ -53,3 +53,11 @@ man() {
 		LESS_TERMCAP_us="$(printf '\e[1;32m')" \
 		man "$@"
 }
+
+# Set my heureka commit credentials
+git-config-heureka() {
+
+    git config user.name "Cameron Rollheiser"
+    git config user.email "cameron.rollheiser@heurekasoftware.com"
+
+}
