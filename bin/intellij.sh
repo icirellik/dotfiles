@@ -39,15 +39,24 @@ main() {
     cd ..
   fi
 
+  # Codestyles
   mkdir -p "${HOME}/.IdeaIC2017.1/config/codestyles/"
   ln -sfn "${PWD}/idea/config/codestyles/Default.xml" "${HOME}/.IdeaIC2017.1/config/codestyles/Default.xml"
 
+  # External tools
   mkdir -p "${HOME}/.IdeaIC2017.1/config/tools/"
   ln -sfn "${PWD}/idea/config/tools/External Tools.xml" "${HOME}/.IdeaIC2017.1/config/tools/External Tools.xml"
 
+  # Editor options
   mkdir -p "${HOME}/.IdeaIC2017.1/config/otions/"
   ln -sfn "${PWD}/idea/config/options/editor.xml" "${HOME}/.IdeaIC2017.1/config/options/editor.xml"
   ln -sfn "${PWD}/idea/config/options/editor.codeinsight.xml" "${HOME}/.IdeaIC2017.1/config/options/editor.codeinsight.xml"
+  ln -sfn "${PWD}/idea/config/options/keymap.xml" "${HOME}/.IdeaIC2017.1/config/options/keymap.xml"
+
+  # Keymaps
+  mkdir -p "${HOME}/.IdeaIC2017.1/config/keymaps/"
+  ln -sfn "${PWD}/idea/config/keymaps/Custom.xml" "${HOME}/.IdeaIC2017.1/config/keymaps/Custom.xml"
+
   )
 
 }
