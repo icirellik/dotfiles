@@ -34,11 +34,17 @@ main() {
 
   sudo ln -s "${HOME}/tools/idea/bin/idea.sh" /usr/local/bin/idea
 
+  (
+  if [[ "$(basename "${PWD}")" != dotfiles ]]; then
+    cd ..
+  fi
+
   mkdir -p "${HOME}/.IdeaIC2017.1/config/codestyles/"
   ln -sfn "${PWD}/idea/config/codestyles/Default.xml" "${HOME}/.IdeaIC2017.1/config/codestyles/Default.xml"
 
   mkdir -p "${HOME}/.IdeaIC2017.1/config/tools/"
   ln -sfn "${PWD}/idea/config/tools/External Tools.xml" "${HOME}/.IdeaIC2017.1/config/tools/External Tools.xml"
+  )
 
 }
 

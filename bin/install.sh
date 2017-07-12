@@ -173,6 +173,21 @@ install_scripts() {
   chmod +x /usr/local/bin/lolcat
 }
 
+install_java() {
+
+  sudo apt-get update
+  sudo apt-get install -y --no-install-recommends \
+    openjdk-8-jdk
+    
+  intellij.sh
+
+  # shellcheck source=/dev/null
+  source "${HOME}/.sdkman/bin/sdkman-init.sh"
+  sdk install grails 3.2.8
+  sdk install maven 3.3.9
+
+}
+
 # install wifi drivers
 install_wifi() {
   local system=$1
@@ -209,6 +224,7 @@ usage() {
   echo -e "install.sh\n\tThis script installs my basic setup for an ubuntu laptop\n"
   echo "Usage:"
   echo "  sources                     - setup sources & install base pkgs"
+  echo "  java                        - setup java & grails & maven"
   echo "  wifi {broadcom,intel}       - install wifi drivers"
   echo "  graphics {dell,mac,lenovo}  - install graphics drivers"
 }
@@ -228,6 +244,8 @@ main() {
     setup_sources
 
     base
+  elif [[ $cmd == "java" ]]; then
+    install_java
   elif [[ $cmd == "wifi" ]]; then
     install_wifi "$2"
   elif [[ $cmd == "graphics" ]]; then
