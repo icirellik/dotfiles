@@ -42,3 +42,6 @@ alias prikey="more ~/.ssh/id_rsa | xclip -selection clipboard | echo '=> Private
 
 # Add git alias for gpg in tmux
 alias git="GPG_TTY=\$(tty); git"
+
+# IntelliJ terminal start
+alias idea="idea & disown"
