@@ -94,6 +94,7 @@ base() {
     shellcheck \
     silversearcher-ag \
     ssh \
+    postgresql-client-9.5 \
     strace \
     sudo \
     sysstat \
@@ -178,7 +179,7 @@ install_java() {
   sudo apt-get update
   sudo apt-get install -y --no-install-recommends \
     openjdk-8-jdk
-    
+
   intellij.sh
 
   # shellcheck source=/dev/null
