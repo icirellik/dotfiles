@@ -41,16 +41,18 @@ main() {
 
   # Codestyles
   mkdir -p "${HOME}/.IdeaIC2017.1/config/codestyles/"
-  ln -sfn "${PWD}/idea/config/codestyles/Default.xml" "${HOME}/.IdeaIC2017.1/config/codestyles/Default.xml"
+  ln -sfn "${PWD}/idea/config/codestyles/Custom.xml" "${HOME}/.IdeaIC2017.1/config/codestyles/Custom.xml"
 
   # External tools
   mkdir -p "${HOME}/.IdeaIC2017.1/config/tools/"
   ln -sfn "${PWD}/idea/config/tools/External Tools.xml" "${HOME}/.IdeaIC2017.1/config/tools/External Tools.xml"
 
   # Editor options
-  mkdir -p "${HOME}/.IdeaIC2017.1/config/otions/"
+  mkdir -p "${HOME}/.IdeaIC2017.1/config/options/"
+  ln -sfn "${PWD}/idea/config/options/code.style.schemes.xml" "${HOME}/.IdeaIC2017.1/config/options/code.style.schemes.xml"
   ln -sfn "${PWD}/idea/config/options/editor.xml" "${HOME}/.IdeaIC2017.1/config/options/editor.xml"
   ln -sfn "${PWD}/idea/config/options/editor.codeinsight.xml" "${HOME}/.IdeaIC2017.1/config/options/editor.codeinsight.xml"
+  ln -sfn "${PWD}/idea/config/options/ide.general.xml" "${HOME}/.IdeaIC2017.1/config/options/ide.general.xml"
   ln -sfn "${PWD}/idea/config/options/keymap.xml" "${HOME}/.IdeaIC2017.1/config/options/keymap.xml"
 
   # Keymaps

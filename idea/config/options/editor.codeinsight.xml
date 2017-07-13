@@ -1,6 +1,11 @@
 <application>
+  <component name="AndroidFoldingSettings">
+    <option name="collapseAndroidStrings" value="false" />
+    <option name="COLLAPSE_ANDROID_TEXT" value="false" />
+  </component>
   <component name="CodeFoldingSettings">
     <option name="COLLAPSE_IMPORTS" value="false" />
+    <option name="COLLAPSE_FILE_HEADER" value="false" />
   </component>
   <component name="CodeInsightSettings">
     <option name="AUTOCOMPLETE_ON_CODE_COMPLETION" value="false" />
@@ -10,8 +15,15 @@
     <option name="REFORMAT_BLOCK_ON_RBRACE" value="false" />
   </component>
   <component name="JavaCodeFoldingSettings">
+    <option name="collapseConstructorGenericParameters" value="false" />
+    <option name="collapseI18nMessages" value="false" />
+    <option name="collapseLambdas" value="false" />
+    <option name="collapseOneLineMethods" value="false" />
     <option name="collapseSuppressWarnings" value="false" />
-    <option name="COLLAPSE_ONE_LINE_METHODS" value="false" />
-    <option name="COLLAPSE_SUPPRESS_WARNINGS" value="false" />
+  </component>
+  <component name="XmlFoldingSettings">
+    <option name="COLLAPSE_HTML_STYLE_ATTRIBUTE" value="false" />
+    <option name="COLLAPSE_ENTITIES" value="false" />
+    <option name="COLLAPSE_DATA_URI" value="false" />
   </component>
 </application>
