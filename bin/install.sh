@@ -139,6 +139,56 @@ setup_sudo() {
   gpasswd -a "$USERNAME" systemd-network
 }
 
+# Automatically install and verify Githubs ssh fingerprints.
+# https://help.github.com/articles/github-s-ssh-key-fingerprints/
+setup_github_ssh_fingerprint() {
+  echo "TODO: Not implemented"
+}
+
+# Automatically install and verify Bitbuckets ssh fingerprints
+# https://confluence.atlassian.com/bitbucket/use-the-ssh-protocol-with-bitbucket-cloud-221449711.html
+setup_bitbucket_ssh_fingerprint() {
+  echo "TODO: Not implemented"
+}
+
+# install/update golang from source
+install_golang() {
+	export GO_VERSION=1.8.1
+	export GO_SRC=/usr/local/go
+
+	# if we are passing the version
+	if [[ ! -z "$1" ]]; then
+		export GO_VERSION=$1
+	fi
+
+	# purge old src
+	if [[ -d "$GO_SRC" ]]; then
+		sudo rm -rf "$GO_SRC"
+		sudo rm -rf "$GOPATH"
+	fi
+
+	# subshell
+	(
+	curl -sSL "https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz" | sudo tar -v -C /usr/local -xz
+	local user="$USER"
+	# rebuild stdlib for faster builds
+	sudo chown -R "${user}" /usr/local/go/pkg
+	CGO_ENABLED=0 go install -a -installsuffix cgo std
+	)
+
+	# get commandline tools
+	(
+	set -x
+	set +e
+	go get github.com/golang/lint/golint
+	go get golang.org/x/tools/cmd/cover
+	go get golang.org/x/review/git-codereview
+	go get golang.org/x/tools/cmd/goimports
+	go get golang.org/x/tools/cmd/gorename
+	go get golang.org/x/tools/cmd/guru
+	)
+}
+
 # install graphics drivers
 install_graphics() {
   local system=$1
@@ -226,6 +276,7 @@ usage() {
   echo "Usage:"
   echo "  sources                     - setup sources & install base pkgs"
   echo "  java                        - setup java & grails & maven"
+  echo "  golang                      - install golang and packages"
   echo "  wifi {broadcom,intel}       - install wifi drivers"
   echo "  graphics {dell,mac,lenovo}  - install graphics drivers"
 }
@@ -247,6 +298,8 @@ main() {
     base
   elif [[ $cmd == "java" ]]; then
     install_java
+  elif [[ $cmd == "golang" ]]; then
+		install_golang "$2"
   elif [[ $cmd == "wifi" ]]; then
     install_wifi "$2"
   elif [[ $cmd == "graphics" ]]; then
