@@ -1,13 +1,33 @@
 [alias]
+  # Pretty print the git log.
   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+
+  # Checkout a branch.
   co = checkout
+
+  # Create a new branch
   cob = checkout -b
+
+  # Clean up branches that have been merged.
   bclean = "!/bin/bash -c 'branches=( $(git branch --merged ${1-master} | grep -v " ${1-master}$") ); if [ ! -z "${branches}" ]; then for branch in ${branches[@]}; do git branch -d ${branch}; done; else echo "No branches to cleanup"; fi'"
+
+  # Pull with prune.
   pp = pull --prune
+
+  # Pull with prune and clean branches that have been merged.
   ppc = !git pp && git bclean
 
   # Reset a branch that may have been force pushed to the correct remote HEAD.
   fpr = !git rev-parse --abbrev-ref HEAD | xargs -I {} /bin/bash -c 'git fetch origin {} && git reset --soft origin/{}'
+
+  # Force push the current branch
+  fph = purh origin HEAD -f
+
+  # Amend
+  a = commit --amend
+
+  # Amend no edit
+  ane = commit --amend --no-edit
 
   # Apply a fix for GPG interactive tty's
   cm-gpg = !GPG_TTY=$(tty) git commit
