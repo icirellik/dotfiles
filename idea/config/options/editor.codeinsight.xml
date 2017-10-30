@@ -13,6 +13,7 @@
     <option name="AUTOINSERT_PAIR_BRACKET" value="false" />
     <option name="AUTOINSERT_PAIR_QUOTE" value="false" />
     <option name="REFORMAT_BLOCK_ON_RBRACE" value="false" />
+    <option name="REFORMAT_ON_PASTE" value="1" />
   </component>
   <component name="JavaCodeFoldingSettings">
     <option name="collapseConstructorGenericParameters" value="false" />
