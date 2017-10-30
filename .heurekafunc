@@ -29,18 +29,21 @@ heureka-run-interrogate() {
 
     del_stopped interrogate
 
+    local IP_ADDRESS
+    IP_ADDRESS=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | grep 192)
+
     docker run --rm -it --name interrogate \
-        -e HEUREKA_COMMUNICATION_API_URL="http://192.168.2.125:8336" \
+        -e HEUREKA_COMMUNICATION_API_URL="http://${IP_ADDRESS}:8336" \
         -e HEUREKA_DATABASE_IP=postgres \
         -e HEUREKA_DATABASE_NAME=core \
         -e HEUREKA_DATABASE_PORT=5432 \
         -e HEUREKA_DATABASE_USERNAME=postgres \
         -e HEUREKA_ENDPOINT_API_BUILD=local \
         -e HEUREKA_ENDPOINT_API_PARTITION=development \
-        -e HEUREKA_ENDPOINT_API_URL="http://192.168.2.125:8335" \
+        -e HEUREKA_ENDPOINT_API_URL="http://${IP_ADDRESS}:8335" \
         -e HEUREKA_INTERROGATE_SERVICE_CODE=ig \
         -e HEUREKA_INTERROGATE_SERVICE_KEY=vDERvKncKUwvfAexSMtbpyTavu5kjR5HY \
-        -e HEUREKA_KEYSTONE_API_URL="http://192.168.2.125:8337" \
+        -e HEUREKA_KEYSTONE_API_URL="http://${IP_ADDRESS}:8337" \
         -e HEUREKA_ORG_CLIENT_KEY=j3rXZaafkujqOi5wQs0LyW8DLcSCvwb9D \
         -p 8080:8080 --link postgres:postgres interrogate
 
