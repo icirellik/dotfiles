@@ -272,7 +272,7 @@ get_dotfiles() {
 }
 
 usage() {
-  echo -e "install.sh\n\tThis script installs my basic setup for an ubuntu laptop\n"
+  echo -e "install.sh\\n\\tThis script installs my basic setup for an ubuntu laptop\\n"
   echo "Usage:"
   echo "  sources                     - setup sources & install base pkgs"
   echo "  java                        - setup java & grails & maven"

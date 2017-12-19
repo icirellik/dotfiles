@@ -32,13 +32,13 @@ _todo() {
             -*) completions="$COMMANDS $(eval TODOTXT_VERBOSE=0 "$_todo_sh" command listaddons) $OPTS";;
             *)  case "$cur" in
                     +*) completions=$(eval TODOTXT_VERBOSE=0 "$_todo_sh" command listproj)
-                        COMPREPLY=( $( compgen -W "$completions" -- "$cur" ))
+                        COMPREPLY=( "$( compgen -W "$completions" -- "$cur" )")
                         [ ${#COMPREPLY[@]} -gt 0 ] && return 0
                         # Fall back to projects extracted from done tasks.
                         completions=$(eval 'TODOTXT_VERBOSE=0 TODOTXT_SOURCEVAR=\$DONE_FILE' "$_todo_sh" command listproj)
                         ;;
                     @*) completions=$(eval TODOTXT_VERBOSE=0 "$_todo_sh" command listcon)
-                        COMPREPLY=( $( compgen -W "$completions" -- "$cur" ))
+                        COMPREPLY=( "$( compgen -W "$completions" -- "$cur" )")
                         [ ${#COMPREPLY[@]} -gt 0 ] && return 0
                         # Fall back to contexts extracted from done tasks.
                         completions=$(eval 'TODOTXT_VERBOSE=0 TODOTXT_SOURCEVAR=\$DONE_FILE' "$_todo_sh" command listcon)
@@ -77,7 +77,7 @@ _todo() {
         esac
     fi
 
-    COMPREPLY=( $( compgen -W "$completions" -- "$cur" ))
+    COMPREPLY=( "$( compgen -W "$completions" -- "$cur" )")
     return 0
 }
 complete -F _todo todo.sh
