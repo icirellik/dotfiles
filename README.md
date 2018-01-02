@@ -4,6 +4,8 @@
 
 Buyer beware
 
+All of these install scripts have been tested to Ubuntu 16.04.
+
 ## Installation
 
 ```sh
