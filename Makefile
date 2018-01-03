@@ -1,6 +1,6 @@
-.PHONY: all bin dotfiles etc test tools shellcheck usr
+.PHONY: all bin checkinstalltools checktesttools dotfiles etc test tools shellcheck usr
 
-all: bin dotfiles etc usr tools
+all: checkinstalltools bin dotfiles etc usr tools
 
 bin:
 	# add aliases for things in bin
@@ -8,6 +8,13 @@ bin:
 		f=$$(basename $$file); \
 		sudo ln -sf $$file /usr/local/bin/$$f; \
 	done;
+
+checkinstalltools:
+	command -v curl;
+	command -v python;
+
+checktesttools:
+	command -v docker;
 
 dotfiles:
 	# add aliases for dotfiles
@@ -35,7 +42,7 @@ usr:
 	systemctl --user daemon-reload;
 	sudo systemctl daemon-reload;
 
-test: shellcheck
+test: checktesttools shellcheck
 
 tools:
 	# Install vim plugins
