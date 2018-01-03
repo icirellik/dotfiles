@@ -86,7 +86,6 @@ base() {
     ngrep \
     openvpn \
     pinentry-curses \
-    postgresql-client-9.5 \
     ranger \
     rxvt \
     rxvt-unicode-256color \
@@ -112,12 +111,19 @@ base() {
     zip \
     --no-install-recommends
 
+
+  # Install Postgres
+  sudo add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main"
+  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+  sudo apt-get update
+  sudo apt-get install -y postgresql-client-9.6
+
   # install tlp with recommends
   apt-get install -y tlp tlp-rdw
 
   setup_sudo
 
-  apt-get remove -y --purge nano  
+  apt-get remove -y --purge nano
 
   apt-get autoremove
   apt-get autoclean
