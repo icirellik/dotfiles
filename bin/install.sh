@@ -86,6 +86,7 @@ base() {
     ngrep \
     openvpn \
     pinentry-curses \
+    postgresql-client-9.5 \
     ranger \
     rxvt \
     rxvt-unicode-256color \
@@ -94,15 +95,16 @@ base() {
     shellcheck \
     silversearcher-ag \
     ssh \
-    postgresql-client-9.5 \
     strace \
     sudo \
     sysstat \
     tar \
+    tmux \
     tree \
     tzdata \
     uncrustify \
     unzip \
+    vim \
     wavemon \
     xclip \
     xcompmgr \
@@ -114,6 +116,8 @@ base() {
   apt-get install -y tlp tlp-rdw
 
   setup_sudo
+
+  apt-get remove -y --purge nano  
 
   apt-get autoremove
   apt-get autoclean
