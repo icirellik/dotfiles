@@ -65,8 +65,8 @@ tools:
 	# Install Google Cloud SDK
 	if [ ! -d "$(HOME)/tools/google-cloud-sdk" ]; then \
 		curl https://sdk.cloud.google.com | bash -s -- --disable-prompts --install-dir=$(HOME)/tools; \
-		gcloud components install --quiet kubectl; \
-		gcloud components update --quiet; \
+		$(HOME)/tools/google-cloud-sdk/bin/gcloud components install --quiet kubectl; \
+		$(HOME)/tools/google-cloud-sdk/bin/gcloud components update --quiet; \
 	fi;
 	# Install node
 	if [ ! -d "$(HOME)/tools/node" ]; then \
