@@ -23,7 +23,9 @@ fi;
 history_sync() {
   history -a; history -c; history -r;
 }
-shopt -s histappend                         # Append rather than overwrite
+
+# Append rather than overwrite
+shopt -s histappend
 
 # ======== Prompt setup ===========================
 #
@@ -147,12 +149,14 @@ prompt_kube() {
   if [[ $(command -v kubectl) ]]; then
 
     if [[ $? == 0 ]]; then
-      kube="$(kubectl config view | grep current-context | cut -d : -f2 | cut -d _ -f 4)"
+      kube="$(kubectl config view --output=json | jq -r '."current-context"')"
     fi
 
     [ -n "${kube}" ] && s=" (${kube})";
 
-    echo -e "${cyan}[${kube}] "
+    if [ ! -z "${kube}" ]; then
+      echo -e "${cyan}[${kube}] "
+    fi
   else
     return;
   fi;
