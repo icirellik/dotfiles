@@ -149,7 +149,7 @@ prompt_kube() {
   if [[ $(command -v kubectl) ]]; then
 
     if [[ $? == 0 ]]; then
-      kube="$(kubectl config view --output=json | jq -r '."current-context"')"
+      kube="$(kubectl config view --output=json | jq -r '."current-context"' | cut -d _ -f 4-)"
     fi
 
     [ -n "${kube}" ] && s=" (${kube})";
