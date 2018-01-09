@@ -45,3 +45,6 @@ alias git="GPG_TTY=\$(tty); git"
 
 # IntelliJ terminal start
 alias idea="idea & disown"
+
+# Lastpass aliases
+alias mypass="lpass show --password --clip"
