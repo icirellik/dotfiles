@@ -78,6 +78,7 @@ tools:
 		ln -sf $(HOME)/tools/node-v$(NODE_VERSION)-linux-x64 $(HOME)/tools/node; \
 		rm -f /tmp/node-v$(NODE_VERSION)-linux-x64.tar.xz; \
 		npm install -g \
+		  eslint \
 		  gulp \
 		  git-run \
 		  yarn; \
