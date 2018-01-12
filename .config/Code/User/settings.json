@@ -1,0 +1,22 @@
+{
+    "editor.renderWhitespace": "all",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "extensions.ignoreRecommendations": false,
+    "editor.minimap.enabled": false,
+    "editor.codeLens": false,
+    "editor.cursorStyle": "line",
+    "editor.renderLineHighlight": "all",
+    "workbench.editor.showTabs": false,
+    "workbench.startupEditor": "none",
+    "editor.rulers": [
+        70, 80
+    ],
+    "[json]": {
+        "editor.tabSize": 2
+    },
+    "[javascript]": {
+        "editor.tabSize": 2,
+        "editor.detectIndentation": false
+    }
+}

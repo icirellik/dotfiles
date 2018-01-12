@@ -27,6 +27,8 @@ dotfiles:
 	done;
 	ln -sfn $(CURDIR)/.gnupg/gpg.conf $(HOME)/.gnupg/gpg.conf;
 	ln -sfn $(CURDIR)/.gnupg/gpg-agent.conf $(HOME)/.gnupg/gpg-agent.conf;
+	mkdir -p $(HOME)/.config/Code/User
+	ln -sfn $(CURDIR)/.config/Code/User/settings.json $(HOME)/.config/Code/User/settings.json
 
 etc:
 	echo "etc";
