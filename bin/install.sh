@@ -47,6 +47,7 @@ base() {
   apt-get install -y \
     adduser \
     alsa-utils \
+    apache2-utils \
     apparmor \
     automake \
     bash-completion \
