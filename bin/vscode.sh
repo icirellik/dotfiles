@@ -14,3 +14,4 @@ rm vscode.deb
 # Install extensions.
 code --install-extension dbaeumer.vscode-eslint
 code --install-extension eriklynd.json-tools
+code --install-extension ms-python.python

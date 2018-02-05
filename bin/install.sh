@@ -87,6 +87,7 @@ base() {
     ngrep \
     openvpn \
     pinentry-curses \
+    pylint \
     ranger \
     rxvt \
     rxvt-unicode-256color \
