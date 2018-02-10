@@ -95,6 +95,7 @@ base() {
     scdaemon \
     shellcheck \
     silversearcher-ag \
+    moreutils \
     ssh \
     strace \
     sudo \
