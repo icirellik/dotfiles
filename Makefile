@@ -1,21 +1,28 @@
-.PHONY: all bin checkinstalltools checktesttools dotfiles etc test tools shellcheck usr
+.PHONY: all bin checkinstalltools checktesttools dotfiles etc test tools toolsnode shellcheck usr
 
 # Environment Variables
 NODE_VERSION=9.3.0
 
+UPGRADE=false
+
 all: checkinstalltools bin dotfiles etc usr tools
+
+upgrade:
+	UPGRADE=true;
 
 bin:
 	# add aliases for things in bin
 	for file in $(shell find $(CURDIR)/bin -type f -not -name "todo" -not -name ".*.swp"); do \
 		f=$$(basename $$file); \
-		sudo ln -sf $$file /usr/local/bin/$$f; \
+		sudo ln -svfn $$file /usr/local/bin/$$f; \
 	done;
 
+# Tools require to execute the make file.
 checkinstalltools:
 	command -v curl;
 	command -v python;
 
+# Tool required to run the make test command.
 checktesttools:
 	command -v docker;
 
@@ -103,6 +110,19 @@ tools:
 		sudo systemctl daemon-reload; \
 		sudo systemctl enable "syncthing@$$USER"; \
 		sudo systemctl start "syncthing@$$USER"; \
+	fi;
+
+toolsnode:
+	if [ ! -d "$(HOME)/tools/node" ] || [ "$(UPGRADE) = "true" ]; then \
+		curl -s -o /tmp/node-v$(NODE_VERSION)-linux-x64.tar.xz https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-linux-x64.tar.xz; \
+		tar xf /tmp/node-v$(NODE_VERSION)-linux-x64.tar.xz -C $(HOME)/tools; \
+		ln -sf $(HOME)/tools/node-v$(NODE_VERSION)-linux-x64 $(HOME)/tools/node; \
+		rm -f /tmp/node-v$(NODE_VERSION)-linux-x64.tar.xz; \
+		npm install -g \
+			eslint \
+			gulp \
+			git-run \
+			yarn; \
 	fi;
 
 # if this session isn't interactive, then we don't want to allocate a
