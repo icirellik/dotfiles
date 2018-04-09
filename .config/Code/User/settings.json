@@ -2,32 +2,36 @@
     "editor.codeLens": false,
     "editor.cursorStyle": "line",
     "editor.minimap.enabled": false,
+    "editor.multiCursorModifier": "ctrlCmd",
     "editor.renderLineHighlight": "all",
     "editor.renderWhitespace": "all",
     "editor.rulers": [
         70, 80
     ],
+    "eslint.enable": true,
     "explorer.openEditors.dynamicHeight": false,
     "explorer.openEditors.visible": 10,
     "extensions.ignoreRecommendations": false,
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
+    "python.linting.pylintUseMinimalCheckers": false,
     "workbench.editor.showTabs": false,
     "workbench.startupEditor": "none",
-    "[json]": {
+    "[css]": {
         "editor.tabSize": 2
     },
     "[javascript]": {
-        "editor.tabSize": 2,
-        "editor.detectIndentation": false
+        "editor.detectIndentation": false,
+        "editor.tabSize": 2
     },
-    "eslint.enable": true,
     "[javascriptreact]": {
         "editor.tabSize": 2
     },
-    "python.linting.pylintUseMinimalCheckers": false,
-    "editor.multiCursorModifier": "ctrlCmd",
-    "[css]": {
+    "[json]": {
+        "editor.tabSize": 2
+    },
+    "[shellscript]": {
+        "editor.detectIndentation": false,
         "editor.tabSize": 2
     }
 }
