@@ -81,12 +81,14 @@ base() {
     lsof \
     make \
     meld \
+    moreutils \
     mount \
     net-tools \
     network-manager \
     ngrep \
     openvpn \
     pinentry-curses \
+    powertop \
     pylint \
     ranger \
     rxvt \
@@ -95,7 +97,6 @@ base() {
     scdaemon \
     shellcheck \
     silversearcher-ag \
-    moreutils \
     ssh \
     strace \
     sudo \
