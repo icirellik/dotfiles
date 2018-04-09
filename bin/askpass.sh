@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Bash script silently prompting for a password..
+# Bash script silently prompting for a password.
 #
 # Author: Cameron Rollheiser <icirellik@gmail.com>
 
