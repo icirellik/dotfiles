@@ -116,7 +116,7 @@ base() {
     --no-install-recommends
 
 
-  # Install Postgres
+  # Install Postgres Client
   sudo add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main"
   wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
   sudo apt-get update
@@ -221,6 +221,17 @@ install_graphics() {
   apt-get install -y "${pkgs[@]}" --no-install-recommends
 }
 
+# install photograph tools.
+# https://github.com/ibaaj/awesome-OpenSourcePhotography
+install_photo() {
+  apt-get update
+  apt-get -y upgrade
+
+  apt-get install -y \
+    darktable \
+    --no-install-recommends
+}
+
 # install custom scripts/binaries
 install_scripts() {
   # install speedtest
@@ -291,6 +302,7 @@ usage() {
   echo "  sources                     - setup sources & install base pkgs"
   echo "  java                        - setup java & grails & maven"
   echo "  golang                      - install golang and packages"
+  echo "  photo                       - install photography packages"
   echo "  wifi {broadcom,intel}       - install wifi drivers"
   echo "  graphics {dell,mac,lenovo}  - install graphics drivers"
 }
@@ -316,6 +328,8 @@ main() {
 		install_golang "$2"
   elif [[ $cmd == "wifi" ]]; then
     install_wifi "$2"
+  elif [[ $cmd == "photo" ]]; then
+    install_photo
   elif [[ $cmd == "graphics" ]]; then
     check_is_sudo
 
