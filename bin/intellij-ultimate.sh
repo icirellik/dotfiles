@@ -30,9 +30,9 @@ main() {
   mv "/tmp/ideaIU-${INTELLIJ_VERSION}" "${HOME}/tools"
   rm -f "/tmp/ideaIU-${INTELLIJ_VERSION}.tar.gz"
 
-  ln -sf "${HOME}/tools/ideaIU-${INTELLIJ_VERSION}" "${HOME}/tools/idea-ultimate"
+  ln -svfn "${HOME}/tools/ideaIU-${INTELLIJ_VERSION}" "${HOME}/tools/idea-ultimate"
 
-  sudo ln -s "${HOME}/tools/idea-ultimate/bin/idea.sh" /usr/local/bin/idea-ultimate
+  sudo ln -svfn "${HOME}/tools/idea-ultimate/bin/idea.sh" /usr/local/bin/idea-ultimate
 
   (
   if [[ "$(basename "${PWD}")" != dotfiles ]]; then
