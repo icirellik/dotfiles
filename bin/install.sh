@@ -250,18 +250,11 @@ install_scripts() {
 }
 
 install_java() {
-
   sudo apt-get update
   sudo apt-get install -y --no-install-recommends \
     openjdk-8-jdk
 
   intellij.sh
-
-  # shellcheck source=/dev/null
-  source "${HOME}/.sdkman/bin/sdkman-init.sh"
-  sdk install grails 3.2.8
-  sdk install maven 3.3.9
-
 }
 
 # install wifi drivers

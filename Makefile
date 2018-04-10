@@ -54,10 +54,6 @@ tools:
 		git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim; \
 		vim +PluginInstall +qall; \
 	fi;
-	# Install sdkman
-	if [ ! -d "$(HOME)/.sdkman" ]; then \
-		curl -s "https://get.sdkman.io" | bash; \
-	fi
 	# Install tmux plugin manager
 	if [ ! -d "$(HOME)/.tmux/plugins/tpm" ]; then \
 		git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm; \

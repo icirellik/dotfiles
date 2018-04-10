@@ -7,11 +7,4 @@
 # shellcheck source=/dev/null
 source "$HOME/tools/google-cloud-sdk/completion.bash.inc"
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-if [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]]; then
-  # shellcheck source=/dev/null
-  source "$HOME/.sdkman/bin/sdkman-init.sh"
-fi
-
 export PATH=/usr/local/bin:/usr/local/go/bin:$PATH:$GOPATH/bin:/usr/share/bcc/tools:/sbin:$HOME/tools/google-cloud-sdk/bin:$HOME/tools/node/bin:$HOME/tools/flyway/
