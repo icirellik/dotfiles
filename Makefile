@@ -1,14 +1,6 @@
-.PHONY: all bin checkinstalltools checktesttools dotfiles etc test tools toolsnode shellcheck usr
-
-# Environment Variables
-NODE_VERSION=9.3.0
-
-UPGRADE=false
+.PHONY: all bin checkinstalltools checktesttools dotfiles etc test tools shellcheck usr
 
 all: checkinstalltools bin dotfiles etc usr tools
-
-upgrade:
-	UPGRADE=true;
 
 bin:
 	# add aliases for things in bin
@@ -81,17 +73,7 @@ tools:
 		$(HOME)/tools/google-cloud-sdk/bin/gcloud components update --quiet; \
 	fi;
 	# Install node
-	if [ ! -d "$(HOME)/tools/node" ]; then \
-		curl -s -o /tmp/node-v$(NODE_VERSION)-linux-x64.tar.xz https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-linux-x64.tar.xz; \
-		tar xf /tmp/node-v$(NODE_VERSION)-linux-x64.tar.xz -C $(HOME)/tools; \
-		ln -sf $(HOME)/tools/node-v$(NODE_VERSION)-linux-x64 $(HOME)/tools/node; \
-		rm -f /tmp/node-v$(NODE_VERSION)-linux-x64.tar.xz; \
-		npm install -g \
-		  eslint \
-		  gulp \
-		  git-run \
-		  yarn; \
-	fi;
+	./bin/node.sh
 	# Install flyway
 	if [ ! -d "$(HOME)/tools/flyway" ]; then \
 		curl -s -o /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/4.1.2/flyway-commandline-4.1.2-linux-x64.tar.gz; \
@@ -110,19 +92,6 @@ tools:
 		sudo systemctl daemon-reload; \
 		sudo systemctl enable "syncthing@$$USER"; \
 		sudo systemctl start "syncthing@$$USER"; \
-	fi;
-
-toolsnode:
-	if [ ! -d "$(HOME)/tools/node" ] || [ "$(UPGRADE) = "true" ]; then \
-		curl -s -o /tmp/node-v$(NODE_VERSION)-linux-x64.tar.xz https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-linux-x64.tar.xz; \
-		tar xf /tmp/node-v$(NODE_VERSION)-linux-x64.tar.xz -C $(HOME)/tools; \
-		ln -sf $(HOME)/tools/node-v$(NODE_VERSION)-linux-x64 $(HOME)/tools/node; \
-		rm -f /tmp/node-v$(NODE_VERSION)-linux-x64.tar.xz; \
-		npm install -g \
-			eslint \
-			gulp \
-			git-run \
-			yarn; \
 	fi;
 
 # if this session isn't interactive, then we don't want to allocate a
