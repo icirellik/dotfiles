@@ -75,6 +75,7 @@ main() {
       eslint \
       gulp \
       git-run \
+      kill-tabs \
       npm \
       yarn;
   )
