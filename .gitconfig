@@ -110,7 +110,7 @@
   program = gpg2
 
 [includeIf "gitdir:~/code/personal/"]
-  path = ~/.gitconfig.personal
+  path = .gitconfig.personal
 
 [includeIf "gitdir:~/code/invision/"]
-  path = ~/.gitconfig.invision
+  path = .gitconfig.invision
