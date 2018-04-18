@@ -49,6 +49,8 @@ usr:
 test: checktesttools shellcheck
 
 tools:
+	# Install git
+	./bin/git.sh
 	# Install vim plugins
 	if [ ! -d "$(HOME)/.vim/bundle" ]; then \
 		git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim; \
