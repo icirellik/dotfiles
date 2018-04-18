@@ -95,11 +95,6 @@
 [diff]
   tool = meld
 
-[user]
-  name = Cameron Rollheiser
-  email = icirellik@gmail.com
-  signingkey = 0x1780CF254F8B82DA
-
 # Uncomment if you want fetch to also get all github pull requests, this is rather
 # large on big repos.
 #[remote "origin"]
@@ -108,11 +103,14 @@
 [github]
 	user = icirellik
 
-[commit]
-  gpgsign = true
-
 [http]
   cookiefile = ~/.gitcookies
 
 [gpg]
   program = gpg2
+
+[includeIf "gitdir:~/code/personal/"]
+  path = ~/.gitconfig.personal
+
+[includeIf "gitdir:~/code/invision/"]
+  path = ~/.gitconfig.invision
