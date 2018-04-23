@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Determine if we are running on macOS
+is_osx() {
+  local platform
+  platform=$(uname)
+  [ "$platform" == "Darwin" ]
+}
+
 # Start an HTTP server from a directory, optionally specifying the port
 server() {
   local port="${1:-8000}"
