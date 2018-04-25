@@ -1,5 +1,10 @@
 #!/bin/bash
 
+export IS_OSX=0
+if is_osx; then
+  export IS_OSX=1
+fi
+
 # Make vim the default editor
 export EDITOR=/usr/bin/vim;
 # export TERMINAL="urxvt";
@@ -32,9 +37,18 @@ export QT_DEVICE_PIXEL_RATIO=2
 export DOCKER_CONTENT_TRUST=0
 
 # Node
-export NODE="$HOME/tools/node/bin/node"
-export NODE_PATH="$HOME/tools/node/lib/node_modules"
+if is_osx; then
+  export NVM_DIR="$HOME/.nvm"
+  # shellcheck source=/dev/null
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  # shellcheck source=/dev/null
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+else
+  export NODE="$HOME/tools/node/bin/node"
+  export NODE_PATH="$HOME/tools/node/lib/node_modules"
+fi
 export NODE_ENV="development"
+
 
 # Lastpass
 export LPASS_ASKPASS=/usr/local/bin/askpass.sh

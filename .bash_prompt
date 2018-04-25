@@ -27,6 +27,12 @@ history_sync() {
 # Append rather than overwrite
 shopt -s histappend
 
+is_osx() {
+  local platform
+  platform=$(uname)
+  [ "$platform" == "Darwin" ]
+}
+
 # ======== Prompt setup ===========================
 #
 # Expand any symbolic links in the specified pathname and convert to absolute path
@@ -171,12 +177,6 @@ bash_prompt() {
   prompt="${yellow}${user}${kube}${branch}${blue}${promptpath}\$${black}${reset} "
   echo -n "${prompt}"
 }
-
-# Determine if we are in the cloud.
-cloud=""
-if grep -q "^flags.* hypervisor" /proc/cpuinfo ; then
-    cloud="☁️ "
-fi
 
 # Highlight the user name when logged in as root.
 if [[ "${USER}" == "root" ]]; then
