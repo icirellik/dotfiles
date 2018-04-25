@@ -97,6 +97,7 @@ ifeq ($(INTERACTIVE), 1)
 endif
 
 shellcheck:
+	docker pull r.j3ss.co/shellcheck; \
 	docker run --rm -i $(DOCKER_FLAGS) \
 		--name df-shellcheck \
 		-v $(CURDIR):/usr/src:ro \

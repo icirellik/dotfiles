@@ -1,8 +1,8 @@
 #!/bin/bash
 
-IS_OSX=0
+export IS_OSX=0
 if is_osx; then
-  IS_OSX=1
+  export IS_OSX=1
 fi
 
 # Make vim the default editor
@@ -39,8 +39,10 @@ export DOCKER_CONTENT_TRUST=0
 # Node
 if is_osx; then
   export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+  # shellcheck source=/dev/null
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  # shellcheck source=/dev/null
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 else
   export NODE="$HOME/tools/node/bin/node"
   export NODE_PATH="$HOME/tools/node/lib/node_modules"
