@@ -1,6 +1,22 @@
-.PHONY: all bin checkinstalltools checktesttools dotfiles etc test tools shellcheck usr
+.PHONY: all all-osx bin check-install-tools check-test-tools check-osx check-linux dotfiles etc test tools shellcheck usr
 
-all: checkinstalltools bin dotfiles etc usr tools
+PLATFORM := $(shell uname)
+
+all: check-linux check-install-tools bin dotfiles etc usr tools
+
+all-osx: check-osx check-install-tools dotfiles tools
+
+check-osx:
+	if [ "$(PLATFORM)" != "Darwin" ]; then \
+		echo Must be run on macOS; \
+		exit 1; \
+	fi
+
+check-linux:
+	if [ "$(PLATFORM)" != "Linux" ]; then \
+		echo Must be run on Linux; \
+		exit 1; \
+	fi
 
 bin:
 	# add aliases for things in bin
@@ -10,12 +26,13 @@ bin:
 	done;
 
 # Tools require to execute the make file.
-checkinstalltools:
+check-install-tools:
 	command -v curl;
 	command -v python;
+	command -v jq;
 
 # Tool required to run the make test command.
-checktesttools:
+check-test-tools:
 	command -v docker;
 
 dotfiles:
@@ -46,7 +63,7 @@ usr:
 	systemctl --user daemon-reload;
 	sudo systemctl daemon-reload;
 
-test: checktesttools shellcheck
+test: check-test-tools shellcheck
 
 tools:
 	# Install git

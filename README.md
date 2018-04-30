@@ -6,7 +6,7 @@ Buyer beware
 
 All of these install scripts have been tested to Ubuntu 16.04.
 
-## Installation
+## Installation (Ubuntu 16.04)
 
 ```sh
 $ make
@@ -27,6 +27,12 @@ Run shellcheck tests
 
 ```sh
 $ make test
+```
+
+## Installlation (OSX)
+
+```sh
+$ make all-osx
 ```
 
 ## Help
