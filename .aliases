@@ -1,9 +1,11 @@
 #!/bin/bash
 
-# debian specific aliases
-alias open='xdg-open'
-alias pbcopy='xclip -selection clipboard'
-alias pbpaste='xclip -selection clipboard -o'
+if ! is_osx; then
+  # debian specific aliases
+  alias open='xdg-open'
+  alias pbcopy='xclip -selection clipboard'
+  alias pbpaste='xclip -selection clipboard -o'
+fi
 
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
