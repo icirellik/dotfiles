@@ -1,6 +1,9 @@
 #!/bin/bash
 
-if ! is_osx; then
+if is_osx; then
+  # macOS specific aliases
+  alias gpg2='gpg'
+else
   # debian specific aliases
   alias open='xdg-open'
   alias pbcopy='xclip -selection clipboard'

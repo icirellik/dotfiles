@@ -1,7 +1,7 @@
 [user]
   name = Cameron Rollheiser
   email = cameronrollheiser@invisionapp.com
-  signingkey = 0x1780CF254F8B82DA
+  signingkey = 0xBFB2499A50114FB3
 
 [commit]
   gpgsign = true
