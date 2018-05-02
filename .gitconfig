@@ -83,12 +83,12 @@
 
 [diff]
 
-	# Detect copies as well as renames
-	renames = copies
+  # Detect copies as well as renames
+  renames = copies
 
 [help]
 
-	# Automatically correct and execute mistyped commands
+  # Automatically correct and execute mistyped commands
   autocorrect=1
 
 
@@ -101,7 +101,15 @@
   #fetch = +refs/pull/*/head:refs/remotes/origin/pull/*
 
 [github]
-	user = icirellik
+  user = icirellik
+
+[user]
+  name = Cameron Rollheiser
+  email = icirellik@gmail.com
+  signingkey = 0x1780CF254F8B82DA
+
+[commit]
+  gpgsign = true
 
 [http]
   cookiefile = ~/.gitcookies
