@@ -87,16 +87,16 @@ casks() {
   brew cask install macdown
   brew cask install muzzle
   brew cask install private-eye
-  brew cask install qlcolorcode 
-  brew cask install qlimagesize 
-  brew cask install qlmarkdown 
-  brew cask install qlstephen 
+  brew cask install qlcolorcode
+  brew cask install qlimagesize
+  brew cask install qlmarkdown
+  brew cask install qlstephen
   brew cask install qlvideo
   brew cask install quicklook-csv
-  brew cask install quicklook-json 
-  brew cask install quicklookase 
-  brew cask install suspicious-package 
-  brew cask install webpquicklook 
+  brew cask install quicklook-json
+  brew cask install quicklookase
+  brew cask install suspicious-package
+  brew cask install webpquicklook
 }
 
 pips() {
@@ -130,10 +130,13 @@ main() {
   casks
   pips
   bash
-  
+
   echo "Cleanup"
   brew cleanup
   brew cask cleanup
+
+  echo "Colors"
+  git clone git@github.com:dracula/iterm ~/.itermcolors
 
   echo "Done!"
 }
