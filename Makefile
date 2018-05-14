@@ -4,7 +4,7 @@ PLATFORM := $(shell uname)
 
 all: check-linux check-install-tools bin dotfiles etc usr tools
 
-all-osx: check-osx check-install-tools dotfiles tools
+all-osx: check-osx check-install-tools bin dotfiles tools
 
 check-osx:
 	if [ "$(PLATFORM)" != "Darwin" ]; then \
