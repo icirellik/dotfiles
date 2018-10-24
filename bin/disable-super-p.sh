@@ -24,6 +24,7 @@ install_linux() {
     echo 'Exiting'
   else
     sudo gconftool-2 -t boolean -s /apps/gnome_settings_daemon/plugins/xrandr/active false
+    sudo dconf write /org/gnome/settings-daemon/plugins/media-keys/video-out "''"
     echo 'Disabled'
   fi
 }
