@@ -50,3 +50,21 @@ https://flywaydb.org/
 ## IntelliJ
 
 ## Atom.io
+
+## Video (X11)
+
+When using nvidia gpu's and X!! make sure the do the following to ensure that
+settings are saved to the correct config.
+
+Create a xorg.conf file by:
+
+```sh
+sudo nvidia-xconfig
+```
+
+Look for the Section "Device" part in the xorg.conf file And add this line
+inside the section:
+
+```sh
+Option "RegistryDwords" "PowerMizerEnable=0x1; PerfLevelSrc=0x3322"
+```
