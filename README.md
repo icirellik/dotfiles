@@ -21,7 +21,9 @@ $ tmux
 
 Restart your shell
 
+```sh
 exec -l $SHELL
+```
 
 Run shellcheck tests
 
