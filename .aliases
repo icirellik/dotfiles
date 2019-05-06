@@ -55,5 +55,5 @@ alias idea="idea & disown"
 alias mypass="lpass show --password --clip"
 
 # Syncthing Conflicts
-alias sync-error-list="find . -type f -name *sync-conflict* "
-alias sync-error-clean="find . -type f -name *sync-conflict* -print0 | xargs -0 -I {} rm -rf \"{}\""
+alias sync-error-list="find . -type f -name \"*sync-conflict*\" "
+alias sync-error-clean="find . -type f -name \"*sync-conflict*\" -print0 | xargs -0 -I {} rm -rf \"{}\""
