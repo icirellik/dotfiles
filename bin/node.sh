@@ -5,7 +5,7 @@
 
 set -e
 
-NODE_VERSION=8.11.1
+NODE_VERSION=10.15.3
 
 is_osx() {
   local platform
