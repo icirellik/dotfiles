@@ -110,7 +110,7 @@ pips() {
 }
 
 main() {
-  if test ! "$(which brew)"; then
+  if test ! "$(command -v brew)"; then
     echo "Install Xcode"
     xcode-select --install
 
