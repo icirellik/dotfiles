@@ -5,7 +5,10 @@
 
 set -e
 
-NODE_VERSION=10.15.3
+NODE_VERSION_LTS=12.15.0
+# NODE_VERSION_STABLE=13.8.0
+
+NODE_VERSION=${NODE_VERSION_LTS}
 
 is_osx() {
   local platform
@@ -24,7 +27,7 @@ node_check() {
 install_osx() {
   local version=${1}
 
-  if [[ ! -z "${version}" ]]; then
+  if [[ -n "${version}" ]]; then
     NODE_VERSION="${version}"
   fi
 
@@ -47,7 +50,7 @@ install_osx() {
 install_linux() {
   local version=${1}
 
-  if [[ ! -z "${version}" ]]; then
+  if [[ -n "${version}" ]]; then
     NODE_VERSION="${version}"
   fi
 

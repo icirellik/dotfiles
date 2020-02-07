@@ -8,6 +8,10 @@ All of these install scripts have been tested to Ubuntu 16.04.
 
 ## Installation (Ubuntu 16.04)
 
+Install deps
+
+sudo apt-get install build-essential curl python jq vim
+
 ```sh
 $ make
 ```
