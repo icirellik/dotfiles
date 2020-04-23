@@ -44,7 +44,7 @@ repo() {
   fi
 
   echo "$giturl"
-  xdg-open "$giturl" > /dev/null 2>&1
+  open "$giturl" > /dev/null 2>&1
   fi
 }
 
@@ -61,3 +61,85 @@ man() {
 		man "$@"
 }
 
+spinner() {
+  chars="/-\|"
+
+  while :; do
+    for (( i=0; i<${#chars}; i++ )); do
+      sleep 0.5
+      echo -en "${chars:$i:1}" "\r"
+    done
+  done
+}
+
+dtty() {
+  screen ~/Library/Containers/com.docker.docker/Data/vms/0/tty
+}
+
+dog() {
+  pred='process matches ".*(ocker|vpnkit).*" || (process in {"taskgated-helper", "launchservicesd", "kernel"} && eventMessage contains[c] "docker")'
+  /usr/bin/log stream --style syslog --level=debug --color=always --predicate "$pred"
+}
+
+cda() {
+  cd "${HOME}/code/artsy/${*}" || exit
+}
+
+dcb() {
+  docker-compose build --no-cache
+}
+
+dce() {
+  COMMAND=${1}
+  SERVICE=${PWD##*/}
+  echo "docker-compose exec ${SERVICE} ${COMMAND}"
+  docker-compose exec "${SERVICE}" "${COMMAND}"
+}
+
+dcl() {
+  docker-compose logs --tail=50 --follow
+}
+
+dclearunused() {
+  docker images | grep none | awk '{print $3}' | while read -r sha; do echo "Removing docker image $sha"; docker rmi "$sha"; done
+}
+
+migrate() {
+  (
+    il
+    ./utils/run.sh migrations edge-gateway=all
+  )
+}
+
+morning() {
+  il && \
+  osascript -e "quit app \"Docker\"" && \
+  git pull && \
+  open --background -a Docker && \
+  while ! docker system info > /dev/null 2>&1; do echo "Waiting for docker..."; sleep 10; done && \
+  migrate && \
+  docker-compose up -d && \
+  docker system prune --all --volumes --force && \
+  echo 'done'
+}
+
+android() {
+  export ANDROID_SDK=$HOME/Library/Android/sdk
+  export PATH=$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$PATH
+  emulator -avd Okta
+  unset ANDROID_SDK
+  unset export
+}
+
+show-colors() {
+  for i in {0..256}; do
+    echo -e "${i} \033[38;05;${i}m COLOR \033[0m"
+  done
+}
+
+# Hokusai
+
+hokusai_get_env() {
+  echo "Looking up ${1} in ${2:-staging}"
+  hokusai "${2:-staging}" env get | grep "${1}"
+}

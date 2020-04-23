@@ -77,7 +77,8 @@ promptpath () {
   fi
 }
 
-# Terminal colours - must use \[ and \] to tell readline about them, so bash line editing works
+# Terminal colours - must use \[ and \] to tell readline about them, so bash
+# line editing works
 inverse="\[$(tput smso)\]"
 uninverse="\[$(tput rmso)\]"
 bold="\[$(tput bold)\]"
@@ -90,6 +91,23 @@ blue="$bold\[$(tput setaf 4)\]"
 magenta="$bold\[$(tput setaf 5)\]"
 yellow="$bold\[$(tput setaf 3)\]"
 cyan="$bold\[$(tput setaf 6)\]"
+
+yarn_prompt="[🧣]"
+npm_prompt="[📦]"
+prompt_package_manager() {
+  local package=''
+  if [[ -f "package.json" ]]; then
+    if [[ -f "yarn.lock" ]]; then
+      package=${yarn_prompt}
+    else
+      package=${npm_prompt}
+    fi
+
+    echo "${magenta}${package} ";
+  else
+    return
+  fi
+}
 
 prompt_git() {
   local s='';
@@ -144,7 +162,7 @@ prompt_git() {
       branchName="${inverse}${red}${branchName}${uninverse}";
     fi
 
-    echo -e "${1}${green}[${branchName}${blue}${s}${green}] ";
+    echo -e "${green}(${branchName}${blue}${s}${green}) ";
   else
     return;
   fi;
@@ -173,24 +191,28 @@ bash_prompt() {
   promptpath=$(promptpath)
   branch=$(prompt_git)
   kube=$(prompt_kube)
+  # package=$(prompt_package_manager)
   user="${USER} "
-  prompt="${yellow}${user}${kube}${branch}${blue}${promptpath}\$${black}${reset} "
+  # prompt="${yellow}${user}${kube}${branch}${package}${blue}${promptpath}\$${black} ${reset}"
+  prompt="${yellow}${user}${kube}${branch}${blue}${promptpath}\$${black} ${reset}"
   echo -n "${prompt}"
 }
 
 # Highlight the user name when logged in as root.
-if [[ "${USER}" == "root" ]]; then
-    userStyle="${red}";
-else
-    userStyle="${blue}";
-fi;
+# // TODO Not used, remove
+# if [[ "${USER}" == "root" ]]; then
+#     userStyle="${red}";
+# else
+#     userStyle="${blue}";
+# fi;
 
 # Highlight the hostname when connected via SSH.
-if [[ "${SSH_TTY}" ]]; then
-    hostStyle="${bold}${cyan}";
-else
-    hostStyle="${cyan}";
-fi;
+# // TODO Not used, remove
+# if [[ "${SSH_TTY}" ]]; then
+#     hostStyle="${bold}${cyan}";
+# else
+#     hostStyle="${cyan}";
+# fi;
 
 # Function called every time bash displays the prompt
 function per_prompt_command {
@@ -206,7 +228,7 @@ function per_prompt_command {
   #     ;;
   # esac
   # Do the prompt
-  PS1="$(bash_prompt)"
-  PS1="$PS1"
+  PS1=$(bash_prompt)
+  # PS1='\w\$ '
 }
 export PROMPT_COMMAND=per_prompt_command
