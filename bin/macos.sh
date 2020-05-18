@@ -27,22 +27,22 @@ brews() {
   brew install coreutils
   brew install dfc
   brew install findutils
-  brew install fontconfig --universal
+  brew install fontconfig
   brew install fpp
   brew install fzf
   brew install git
   brew install git-extras
   brew install git-fresh
   brew install git-lfs
-  brew install gnu-sed --with-default-names
-  brew install gnuplot --with-qt
+  brew install gnu-sed
+  brew install gnuplot
   brew install go
   brew install gpg
   brew install hh
   brew install htop
   brew install httpie
   brew install iftop
-  brew install imagemagick --with-webp
+  brew install imagemagick
   brew install lnav
   brew install m-cli
   brew install mas
@@ -62,8 +62,8 @@ brews() {
   brew install tmux
   brew install trash
   brew install tree
-  brew install vim --with-override-system-vi
-  brew install wget --with-iri
+  brew install vim
+  brew install wget
 }
 
 # Things I don't want auto installed
@@ -77,7 +77,7 @@ brews() {
 # visual-studio-code
 casks() {
   echo "Install software"
-  brew tap caskroom/versions
+  brew tap homebrew/cask-versions
 
   brew cask install airdroid
   brew cask install commander-one
@@ -102,11 +102,11 @@ casks() {
 pips() {
   echo "Installing secondary packages"
 
-  pip install --upgrade pip
-  pip install --upgrade glances
+  sudo pip3 install --upgrade pip
+  pip3 install --upgrade glances
 
   echo "Update packages"
-  pip3 install --upgrade pip setuptools wheel
+  pip3 install --upgrade setuptools wheel
 }
 
 main() {
@@ -133,7 +133,6 @@ main() {
 
   echo "Cleanup"
   brew cleanup
-  brew cask cleanup
 
   echo "Colors"
   git clone git@github.com:dracula/iterm ~/.itermcolors

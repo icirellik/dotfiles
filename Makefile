@@ -37,12 +37,11 @@ check-test-tools:
 
 dotfiles:
 	# add aliases for dotfiles
-	for file in $(shell find $(CURDIR) -name ".*" -not -name ".gitignore" -not -name ".travis.yml" -not -name ".git" -not -name ".*.swp"); do \
+	# exclude the config directory as it will already exist and contains many files.
+	for file in $(shell find $(CURDIR) -name ".*" -not -name ".gitignore" -not -name ".travis.yml" -not -name ".git" -not -name ".dotfiles" -not -name ".config" -not -name ".*.swp"); do \
 		f=$$(basename $$file); \
 		ln -sfn $$file $(HOME)/$$f; \
 	done;
-	ln -sfn $(CURDIR)/.gnupg/gpg.conf $(HOME)/.gnupg/gpg.conf;
-	ln -sfn $(CURDIR)/.gnupg/gpg-agent.conf $(HOME)/.gnupg/gpg-agent.conf;
 	mkdir -p $(HOME)/.config/Code/User
 	ln -sfn $(CURDIR)/.config/Code/User/settings.json $(HOME)/.config/Code/User/settings.json
 
@@ -93,6 +92,7 @@ tools:
 		rm -f /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz; \
 	fi;
 	# Install syncthing
+	# TODO: Fix the osx install
 	if [ ! -d "$(HOME)/tools/syncthing" ]; then \
 		curl -L -s -o /tmp/syncthing-linux-amd64-v0.14.31.tar.gz https://github.com/syncthing/syncthing/releases/download/v0.14.31/syncthing-linux-amd64-v0.14.31.tar.gz; \
 		tar xf /tmp/syncthing-linux-amd64-v0.14.31.tar.gz -C $(HOME)/tools; \

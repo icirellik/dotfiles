@@ -6,6 +6,16 @@
 
 set -e
 
+is_osx() {
+  local platform
+  platform=$(uname)
+  [ "$platform" == "Darwin" ]
+}
+
+if is_osx; then
+  exit
+fi
+
 if [[ $(id -u) -ne 0 ]]; then
    echo "This script must be run as root"
    exit 1
