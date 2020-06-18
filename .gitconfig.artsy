@@ -1,0 +1,6 @@
+[user]
+  name = Cameron Rollheiser
+  email = cameron.rollheiser@artsymail.com
+
+[commit]
+  gpgsign = false

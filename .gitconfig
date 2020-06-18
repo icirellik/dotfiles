@@ -122,3 +122,6 @@
 
 [includeIf "gitdir:~/code/invision/"]
   path = .gitconfig.invision
+
+[includeIf "gitdir:~/code/artsy/"]
+  path = .gitconfig.artsy
