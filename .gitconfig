@@ -13,6 +13,9 @@
 
   # Push origin HEAD.
   poh = push origin HEAD
+  
+  # Push origin HEAD no verify.
+  pohv = push origin HEAD --no-verify
 
   # Pull with prune.
   pp = pull --prune
