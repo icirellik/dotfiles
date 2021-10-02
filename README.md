@@ -35,6 +35,10 @@ Run shellcheck tests
 $ make test
 ```
 
+## Installation (Ubuntu 20.04)
+
+TODO
+
 ## Installlation (OSX)
 
 ```sh
