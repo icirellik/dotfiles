@@ -49,6 +49,8 @@ else
 fi
 export NODE_ENV="development"
 
+# Default Git Branch
+export DEFAULT_GIT_BRANCH=main
 
 # Lastpass
 export LPASS_ASKPASS=/usr/local/bin/askpass.sh

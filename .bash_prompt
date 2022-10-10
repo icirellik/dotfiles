@@ -140,7 +140,7 @@ prompt_git() {
 
     [ -n "${s}" ] && s=" ${s}";
 
-    if [ "${branchName}" = "master" ]; then
+    if [ "${branchName}" = "${DEFAULT_GIT_BRANCH}" ]; then
       branchName="${inverse}${red}${branchName}${uninverse}";
     fi
 
