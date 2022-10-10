@@ -108,6 +108,12 @@ if [[ -f "${HOME}/.bash_profile" ]]; then
     source "${HOME}/.bash_profile"
 fi
 
+# Double check for TPM
+if [[ ! -d "${HOME}/.tmux/plugins/tpm" ]]; then
+  echo "Please browse to https://github.com/tmux-plugins/tpm#installation"
+  echo "and install TPM for Tmux"
+fi
+
 # use a tty for gpg
 # solves error: "gpg: signing failed: Inappropriate ioctl for device"
 GPG_TTY=$(tty)
