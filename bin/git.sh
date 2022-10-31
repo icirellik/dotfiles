@@ -13,6 +13,7 @@ is_osx() {
 }
 
 if is_osx; then
+  echo "This script does not run on OSX"
   exit
 fi
 
