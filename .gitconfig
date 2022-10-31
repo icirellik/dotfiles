@@ -9,7 +9,7 @@
   cob = checkout -b
 
   # Clean up branches that have been merged.
-  bclean = "!/bin/bash -c 'branches=( $(git branch --merged ${1-${DEFAULT_GIT_BRANCH}} | grep -v " ${1-${DEFAULT_GIT_BRANCH}}}$") ); if [ ! -z "${branches}" ]; then for branch in ${branches[@]}; do git branch -d ${branch}; done; else echo "No branches to cleanup"; fi'"
+  bclean = "!/bin/bash -c 'echo $DEFAULT_GIT_BRANCH; branches=( $(git branch --merged ${1-"${DEFAULT_GIT_BRANCH}"} | grep -v " ${1-"${DEFAULT_GIT_BRANCH}"}$") ); if [ ! -z "${branches}" ]; then for branch in ${branches[@]}; do git branch -d ${branch}; done; else echo "No branches to cleanup"; fi'"
 
   # Push origin HEAD.
   poh = push origin HEAD
