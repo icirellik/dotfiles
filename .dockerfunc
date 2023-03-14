@@ -54,7 +54,29 @@ check-for-ugrades(){
 }
 
 reset-wifi(){
+    # TODO: If linux only
     sudo rmmod wl
     sudo modprobe wl
     killall nm-applet && nm-applet &
+}
+
+
+docker-df() {
+  watch -n 5 docker system df
+}
+
+docker-ps() {
+  docker ps -a --format 'table {{.Names}}\t{{.Image}}\t{{.RunningFor}}\t{{.Status}}' | sort
+}
+
+docker-ilq() {
+  docker image ls "quay.io/invision/${1}:${2:-master}"
+}
+
+docker-pq() {
+  docker pull "quay.io/invision/${1}:${2:-master}"
+}
+
+docker-rq() {
+  docker run --rm -it "quay.io/invision/${1}:${2:-master}" /bin/sh
 }
