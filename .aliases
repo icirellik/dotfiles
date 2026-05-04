@@ -4,7 +4,7 @@ if is_osx; then
   # macOS specific aliases
   alias gpg2='gpg'
 else
-  # debian specific aliases
+  # Debian / Linux specific aliases
   alias open='xdg-open'
   alias pbcopy='xclip -selection clipboard'
   alias pbpaste='xclip -selection clipboard -o'
@@ -29,34 +29,47 @@ alias ips="sudo ifconfig -a | grep -o 'inet6\\? \\(addr:\\)\\?\\s\\?\\(\\(\\([0-
 # Flush Directory Service cache
 alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
 
-# View HTTP traffic
-alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
-alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
+# View HTTP traffic — pass interface as $1, default to whatever ngrep/tcpdump auto-pick
+sniff() { sudo ngrep -d "${1:-any}" -t '^(GET|POST) ' 'tcp and port 80'; }
+httpdump() { sudo tcpdump ${1:+-i "$1"} -n -s 0 -w - | grep -a -o -E "Host\\: .*|GET \\/.*"; }
 
-# One of @janmoesen’s ProTip™s
-for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
-	# shellcheck disable=SC2139,SC2140
-	alias "$method"="lwp-request -m \"$method\""
-done
+# One of @janmoesen's ProTip™s — lwp-request wrappers (perl libwww). Disabled
+# because lwp-request is rarely installed; uncomment if needed.
+# for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
+#     # shellcheck disable=SC2139,SC2140
+#     alias "$method"="lwp-request -m \"$method\""
+# done
 
-# Pipe my public key to my clipboard.
-alias pubkey="more ~/.ssh/id_rsa.pub | xclip -selection clipboard | echo '=> Public key copied to pasteboard.'"
+# Pipe SSH keys to clipboard (cross-platform)
+if is_osx; then
+  alias pubkey="more ~/.ssh/id_rsa.pub | pbcopy && echo '=> Public key copied to pasteboard.'"
+  alias prikey="more ~/.ssh/id_rsa | pbcopy && echo '=> Private key copied to pasteboard.'"
+else
+  alias pubkey="more ~/.ssh/id_rsa.pub | xclip -selection clipboard && echo '=> Public key copied to pasteboard.'"
+  alias prikey="more ~/.ssh/id_rsa | xclip -selection clipboard && echo '=> Private key copied to pasteboard.'"
+fi
 
-# Pipe my private key to my clipboard.
-alias prikey="more ~/.ssh/id_rsa | xclip -selection clipboard | echo '=> Private key copied to pasteboard.'"
-
-# Add git alias for gpg in tmux
+# git wrapper to set GPG_TTY for signing inside tmux
 alias git="GPG_TTY=\$(tty); git"
 
 # IntelliJ terminal start
 alias idea="idea & disown"
 
-# Lastpass aliases
+# Lastpass
 alias mypass="lpass show --password --clip"
 
 # Syncthing Conflicts
 alias sync-error-list="find . -type f -name \"*sync-conflict*\" "
 alias sync-error-clean="find . -type f -name \"*sync-conflict*\" -print0 | xargs -0 -I {} rm -rf \"{}\""
+
+# VS Code (insiders build)
+alias code="code-insiders"
+
+# Terraform
+alias tfi="terraform init"
+alias tff="terraform fmt --recursive"
+alias tfp="terraform plan"
+alias tfa="terraform apply"
 
 # Per-machine aliases and secrets (gitignored)
 # shellcheck source=/dev/null
