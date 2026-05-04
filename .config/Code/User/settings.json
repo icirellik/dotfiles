@@ -7,10 +7,8 @@
   "editor.multiCursorModifier": "ctrlCmd",
   "editor.renderLineHighlight": "all",
   "editor.renderWhitespace": "all",
-  "editor.rulers": [
-    70,
-    80
-  ],
+  "editor.fontFamily": "JetBrainsMono Nerd Font Mono",
+  "editor.rulers": [70, 80],
   "explorer.openEditors.visible": 10,
   "extensions.ignoreRecommendations": false,
   "files.insertFinalNewline": true,
@@ -22,7 +20,8 @@
   },
   "[javascript]": {
     "editor.detectIndentation": false,
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[javascriptreact]": {
     "editor.tabSize": 2
@@ -44,7 +43,8 @@
   },
   "[jsonc]": {
     "editor.detectIndentation": false,
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[shellscript]": {
     "editor.detectIndentation": false,
@@ -63,5 +63,84 @@
     "editorWarning.foreground": "#ffff00"
   },
   "search.useIgnoreFiles": true,
-  "typescript.tsserver.experimental.enableProjectDiagnostics": false
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+  "update.showReleaseNotes": false,
+  "window.title": "${activeEditorShort}${separator}${rootName}${separator}${profileName}",
+  "breadcrumbs.enabled": true,
+  "breadcrumbs.filePath": "last",
+  "breadcrumbs.symbolPath": "off",
+  "claude-code.selectedModel": "default",
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  // "github.copilot.nextEditSuggestions.enabled": false,
+
+  // "editor.quickSuggestions": {
+  //   "other": "off",
+  //   "comments": "off",
+  //   "strings": "off"
+  // }
+  // "editor.inlineSuggest.enabled": false,
+  "github.copilot.enable": {
+    "*": false
+  },
+  // "editor.parameterHints.enabled": false,
+  // "[<language>]": {
+  //   "editor.quickSuggestions": {
+  //     "comments": "off",
+  //     "strings": "off",
+  //     "other": "off"
+  //   },
+  //   "editor.suggest.showWords": false,
+  //   "editor.suggest.showSnippets": false
+  // }
+  // "typescript.suggest.enabled": false,
+  // "javascript.suggest.enabled": false,
+
+
+
+
+
+
+  // Uncomment and commit to these — they're already half-decided:
+  // "editor.parameterHints.enabled": false,
+  // "editor.inlineSuggest.enabled": false,
+  // "editor.quickSuggestions": {
+  //   "other": "off",
+  //   "comments": "off",
+  //   "strings": "off"
+  // },
+
+  // Inline popups you haven't suppressed yet:
+  // "editor.hover.enabled": false,           // the tooltip on hover — biggest offender
+  // "editor.lightbulb.enabled": "off",       // the bulb that appears on the current line
+  // "editor.suggest.preview": false,         // ghost text from completions
+  // "editor.wordBasedSuggestions": "off",    // stops suggesting words from open buffers
+  // "editor.acceptSuggestionOnEnter": "off", // stops Enter from hijacking to accept suggestion
+
+  // UI chrome — consistent with your no-tabs, no-minimap stance:
+  // "workbench.layoutControl.enabled": false,  // the layout picker in the title bar
+  // "window.commandCenter": false,             // the search bar in the center of the title bar
+  // "workbench.editor.enablePreview": false,   // single-click opens permanently, not italicized preview
+  // "workbench.editor.enablePreviewFromQuickOpen": false,
+  // "editor.overviewRuler.border": false,
+  // "editor.hideCursorInOverviewRuler": true,
+  // "scm.diffDecorations": "gutter",          // keep gutter diffs, or "none" if you want cleaner
+  // "workbench.tips.enabled": false,
+  // "update.showReleaseNotes": false,          // you already have this
+
+  // Behavior that matches a keyboard-first workflow:
+  // "editor.formatOnSave": true,              // you use prettier everywhere, make it automatic
+  // "workbench.editor.enablePreview": false,  // already above, worth emphasizing
+  // "explorer.confirmDelete": false,          // no modal on file delete
+  // "explorer.confirmDragAndDrop": false,
+  // "files.autoSave": "off",                  // explicit saves, not auto
+  // "editor.find.autoFindInSelection": "multiline",
+
+  // Breadcrumbs — you have it on but minimal. One step further:
+  // "breadcrumbs.symbolPath": "off",          // already set
+  // "breadcrumbs.filePath": "last",           // already set — shows only the filename, clean
+
+  // Two things you might want to know about your current config:
+
+  // 1. "explorer.openEditors.visible": 10 — with showTabs: none the Open Editors panel in the sidebar is your tab bar substitute. That's intentional, or you can set it to 0 to hide it entirely and rely purely on Ctrl+P.
+  // 2. The commented-out Copilot next-edit-suggestions line — since you have Copilot fully disabled via "github.copilot.enable": {"*": false}, that line does nothing either way. You can delete it.
 }

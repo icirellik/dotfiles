@@ -1,5 +1,10 @@
-
+[general]
 live_config_reload = true
+
+[terminal]
+shell = { program = "/opt/homebrew/bin/bash", args = [] }
+#shell = "/opt/homebrew/bin/bash"
+
 # theme = "Catppuccin"
 
 [bell]
@@ -81,11 +86,8 @@ mouse = "Middle"
 [selection]
 semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 
-[shell]
-program = "/opt/homebrew/bin/bash"
-
 [window]
-decorations = "full"
+decorations = "buttonless"
 dynamic_title = true
 option_as_alt = "Both"
 startup_mode = "Maximized"
@@ -110,3 +112,9 @@ vi_mode_style = "Block"
 
 [debug]
 render_timer = false
+
+[keyboard]
+bindings = [
+  { key = "T", mods = "Command", action = "None" },
+  { key = "N", mods = "Command", action = "None" }
+]
