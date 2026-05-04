@@ -91,6 +91,18 @@
   # More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
   # trustctime = false
   editor = vim
+  pager = delta
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  navigate = true
+  line-numbers = true
+  syntax-theme = Monokai Extended
+
+[merge]
+  conflictstyle = zdiff3
 
 [color]
 

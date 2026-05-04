@@ -64,6 +64,13 @@ brews() {
   brew install tree
   brew install vim
   brew install wget
+
+  # Modern CLI tools
+  brew install delta       # syntax-highlighted git diffs (wired into .gitconfig)
+  brew install direnv      # per-directory env vars; great for project secrets
+  brew install gh          # GitHub CLI (PRs, issues, releases from the terminal)
+  brew install mise        # runtime version manager (replaces nvm; adds python/ruby/go)
+  brew install ripgrep     # fast grep replacement; .vimrc grep config can fall back to it
 }
 
 # Things I don't want auto installed
