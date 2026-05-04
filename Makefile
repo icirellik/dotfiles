@@ -36,14 +36,33 @@ check-test-tools:
 	command -v docker;
 
 dotfiles:
-	# add aliases for dotfiles
-	# exclude the config directory as it will already exist and contains many files.
-	for file in $(shell find $(CURDIR) -name ".*" -not -name ".gitignore" -not -name ".travis.yml" -not -name ".git" -not -name ".dotfiles" -not -name ".config" -not -name ".*.swp"); do \
+	# Symlink top-level dotfiles into $$HOME.
+	# -maxdepth 1: only top-level entries (don't descend into attic/.gitkeep etc)
+	# Excludes:
+	#   .gitignore, .editorconfig, .travis.yml — repo metadata, not dotfiles
+	#   .git, .dotfiles, .config — special handling
+	#   .claude — Claude Code session state, must not leak into ~
+	#   .DS_Store — macOS junk
+	#   .npmrc — must not symlink the empty repo file over ~/.npmrc (which
+	#            holds tokens). npm reads ~/.npmrc directly.
+	for file in $(shell find $(CURDIR) -maxdepth 1 -name ".*" \
+		-not -name ".gitignore" \
+		-not -name ".editorconfig" \
+		-not -name ".travis.yml" \
+		-not -name ".git" \
+		-not -name ".dotfiles" \
+		-not -name ".config" \
+		-not -name ".claude" \
+		-not -name ".DS_Store" \
+		-not -name ".npmrc" \
+		-not -name ".*.swp"); do \
 		f=$$(basename $$file); \
 		ln -sfn $$file $(HOME)/$$f; \
 	done;
 	mkdir -p $(HOME)/.config/Code/User
 	ln -sfn $(CURDIR)/.config/Code/User/settings.json $(HOME)/.config/Code/User/settings.json
+	mkdir -p $(HOME)/.config/alacritty
+	ln -sfn $(CURDIR)/.config/alacritty/alacritty.toml $(HOME)/.config/alacritty/alacritty.toml
 
 etc:
 	echo "etc";
