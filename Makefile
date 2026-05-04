@@ -67,11 +67,12 @@ test: check-test-tools shellcheck
 tools:
 	# Install git
 	./bin/git.sh
-	# Install vim plugins
-	if [ ! -d "$(HOME)/.vim/bundle" ]; then \
-		git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim; \
-		vim +PluginInstall +qall; \
+	# Install vim-plug if not already present, then install plugins
+	if [ ! -f "$(HOME)/.vim/autoload/plug.vim" ]; then \
+		curl -fLo $(HOME)/.vim/autoload/plug.vim --create-dirs \
+			https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim; \
 	fi;
+	vim +PlugInstall +qall
 	# Install tmux plugin manager
 	if [ ! -d "$(HOME)/.tmux/plugins/tpm" ]; then \
 		git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm; \
