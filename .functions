@@ -61,3 +61,7 @@ man() {
 		man "$@"
 }
 
+# Per-machine functions (gitignored)
+# shellcheck source=/dev/null
+[ -f "$HOME/.functions.local" ] && . "$HOME/.functions.local"
+

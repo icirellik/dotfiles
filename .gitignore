@@ -1,1 +1,23 @@
 .gnupg/**/*.key
+
+# macOS junk
+.DS_Store
+
+# Local-only overrides for shell config (never commit)
+.exports.local
+.aliases.local
+.functions.local
+.bashrc.local
+
+# Local-only npm credentials (npm reads ~/.npmrc directly)
+.npmrc
+.npmrc.local
+
+# Work / context-specific git includeIfs
+.gitconfig.level20
+.gitconfig.personal
+.gitconfig.artsy
+.gitconfig.invision
+
+# Editor / Claude session state
+.claude/

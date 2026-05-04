@@ -52,5 +52,6 @@ export NODE_ENV="development"
 # Default Git Branch
 export DEFAULT_GIT_BRANCH=main
 
-# Lastpass
-export LPASS_ASKPASS=/usr/local/bin/askpass.sh
+# Per-machine secrets and overrides (gitignored)
+# shellcheck source=/dev/null
+[ -f "$HOME/.exports.local" ] && . "$HOME/.exports.local"
