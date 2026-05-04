@@ -1,37 +1,67 @@
 {
-    "editor.codeLens": false,
-    "editor.cursorStyle": "line",
-    "editor.minimap.enabled": false,
-    "editor.multiCursorModifier": "ctrlCmd",
-    "editor.renderLineHighlight": "all",
-    "editor.renderWhitespace": "all",
-    "editor.rulers": [
-        70, 80
-    ],
-    "eslint.enable": true,
-    "explorer.openEditors.dynamicHeight": false,
-    "explorer.openEditors.visible": 10,
-    "extensions.ignoreRecommendations": false,
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true,
-    "python.linting.pylintUseMinimalCheckers": false,
-    "workbench.editor.showTabs": false,
-    "workbench.startupEditor": "none",
-    "[css]": {
-        "editor.tabSize": 2
-    },
-    "[javascript]": {
-        "editor.detectIndentation": false,
-        "editor.tabSize": 2
-    },
-    "[javascriptreact]": {
-        "editor.tabSize": 2
-    },
-    "[json]": {
-        "editor.tabSize": 2
-    },
-    "[shellscript]": {
-        "editor.detectIndentation": false,
-        "editor.tabSize": 2
-    }
+  "javascript.updateImportsOnFileMove.enabled": "never",
+  "typescript.updateImportsOnFileMove.enabled": "never",
+  "editor.codeLens": false,
+  "editor.cursorStyle": "line",
+  "editor.minimap.enabled": false,
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.renderLineHighlight": "all",
+  "editor.renderWhitespace": "all",
+  "editor.rulers": [
+    70,
+    80
+  ],
+  "explorer.openEditors.visible": 10,
+  "extensions.ignoreRecommendations": false,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "workbench.editor.showTabs": "none",
+  "workbench.startupEditor": "none",
+  "[css]": {
+    "editor.tabSize": 2
+  },
+  "[javascript]": {
+    "editor.detectIndentation": false,
+    "editor.tabSize": 2
+  },
+  "[javascriptreact]": {
+    "editor.tabSize": 2
+  },
+  "[typescript]": {
+    "editor.detectIndentation": false,
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.detectIndentation": false,
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.detectIndentation": false,
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.detectIndentation": false,
+    "editor.tabSize": 2
+  },
+  "[shellscript]": {
+    "editor.detectIndentation": false,
+    "editor.tabSize": 2
+  },
+  "workbench.settings.editor": "json",
+  "typescript.validate.enable": true,
+  "typescript.referencesCodeLens.enabled": false,
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "security.workspace.trust.startupPrompt": "never",
+  "security.workspace.trust.untrustedFiles": "open",
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.colorCustomizations": {
+    "editorWarning.foreground": "#ffff00"
+  },
+  "search.useIgnoreFiles": true,
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false
 }
