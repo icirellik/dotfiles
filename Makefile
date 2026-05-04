@@ -1,10 +1,10 @@
-.PHONY: all all-osx bin check-install-tools check-test-tools check-osx check-linux dotfiles etc test tools shellcheck usr
+.PHONY: all all-osx bin check-install-tools check-test-tools check-osx check-linux dotfiles etc test tools tools-osx shellcheck usr
 
 PLATFORM := $(shell uname)
 
 all: check-linux check-install-tools bin dotfiles etc usr tools
 
-all-osx: check-osx check-install-tools bin dotfiles tools
+all-osx: check-osx check-install-tools bin dotfiles tools-osx
 
 check-osx:
 	if [ "$(PLATFORM)" != "Darwin" ]; then \
@@ -64,6 +64,20 @@ usr:
 
 test: check-test-tools shellcheck
 
+# macOS tools: vim-plug + tpm. git comes from Homebrew (bin/macos.sh).
+tools-osx:
+	# Install vim-plug if not already present, then install plugins
+	if [ ! -f "$(HOME)/.vim/autoload/plug.vim" ]; then \
+		curl -fLo $(HOME)/.vim/autoload/plug.vim --create-dirs \
+			https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim; \
+	fi;
+	vim +PlugInstall +qall
+	# Install tmux plugin manager
+	if [ ! -d "$(HOME)/.tmux/plugins/tpm" ]; then \
+		git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm; \
+	fi
+
+# Linux tools.
 tools:
 	# Install git
 	./bin/git.sh
@@ -75,7 +89,7 @@ tools:
 	vim +PlugInstall +qall
 	# Install tmux plugin manager
 	if [ ! -d "$(HOME)/.tmux/plugins/tpm" ]; then \
-		git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm; \
+		git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm; \
 	fi
 	# Make the tools directory
 	if [ ! -d "$(HOME)/tools" ]; then \
@@ -83,28 +97,30 @@ tools:
 	fi;
 	# Install Google Cloud SDK
 	./bin/google-cloud-sdk.sh
-	# Install node
-	./bin/node.sh
-	# Install flyway
-	if [ ! -d "$(HOME)/tools/flyway" ]; then \
-		curl -s -o /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/4.1.2/flyway-commandline-4.1.2-linux-x64.tar.gz; \
-		tar xf /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz -C $(HOME)/tools; \
-		ln -sf $(HOME)/tools/flyway-4.1.2 $(HOME)/tools/flyway; \
-		rm -f /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz; \
-	fi;
-	# Install syncthing
-	# TODO: Fix the osx install
-	if [ ! -d "$(HOME)/tools/syncthing" ]; then \
-		curl -L -s -o /tmp/syncthing-linux-amd64-v0.14.31.tar.gz https://github.com/syncthing/syncthing/releases/download/v0.14.31/syncthing-linux-amd64-v0.14.31.tar.gz; \
-		tar xf /tmp/syncthing-linux-amd64-v0.14.31.tar.gz -C $(HOME)/tools; \
-		ln -sf $(HOME)/tools/syncthing-linux-amd64-v0.14.31 $(HOME)/tools/syncthing; \
-		rm -f /tmp/syncthing-linux-amd64-v0.14.31.tar.gz; \
-		sudo ln -sf $(HOME)/tools/syncthing/syncthing /usr/local/bin/syncthing; \
-		sudo cp -f --remove-destination etc/systemd/system/syncthing@.service /etc/systemd/system/; \
-		sudo systemctl daemon-reload; \
-		sudo systemctl enable "syncthing@$$USER"; \
-		sudo systemctl start "syncthing@$$USER"; \
-	fi;
+	# Node install — disabled. NVM (in .exports) is the source of truth on
+	# macOS; for Linux, install nvm or use the system package manager.
+	#./bin/node.sh
+	# Flyway install — disabled. Pinned to v4.1.2 (2017); install on demand
+	# from https://flywaydb.org/ if you actually need it.
+	#if [ ! -d "$(HOME)/tools/flyway" ]; then \
+	#	curl -s -o /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/4.1.2/flyway-commandline-4.1.2-linux-x64.tar.gz; \
+	#	tar xf /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz -C $(HOME)/tools; \
+	#	ln -sf $(HOME)/tools/flyway-4.1.2 $(HOME)/tools/flyway; \
+	#	rm -f /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz; \
+	#fi;
+	# Syncthing install — disabled. Pinned to v0.14.31 (2017); use the
+	# system package manager or install on demand if needed.
+	#if [ ! -d "$(HOME)/tools/syncthing" ]; then \
+	#	curl -L -s -o /tmp/syncthing-linux-amd64-v0.14.31.tar.gz https://github.com/syncthing/syncthing/releases/download/v0.14.31/syncthing-linux-amd64-v0.14.31.tar.gz; \
+	#	tar xf /tmp/syncthing-linux-amd64-v0.14.31.tar.gz -C $(HOME)/tools; \
+	#	ln -sf $(HOME)/tools/syncthing-linux-amd64-v0.14.31 $(HOME)/tools/syncthing; \
+	#	rm -f /tmp/syncthing-linux-amd64-v0.14.31.tar.gz; \
+	#	sudo ln -sf $(HOME)/tools/syncthing/syncthing /usr/local/bin/syncthing; \
+	#	sudo cp -f --remove-destination etc/systemd/system/syncthing@.service /etc/systemd/system/; \
+	#	sudo systemctl daemon-reload; \
+	#	sudo systemctl enable "syncthing@$$USER"; \
+	#	sudo systemctl start "syncthing@$$USER"; \
+	#fi;
 
 # if this session isn't interactive, then we don't want to allocate a
 # TTY, which would fail, but if it is interactive, we do want to attach

@@ -1,80 +1,88 @@
 # My Dotfiles
 
-[![Travis CI](https://travis-ci.org/icirellik/dotfiles.svg?branch=master)](https://travis-ci.org/icirellik/dotfiles)
+Buyer beware.
 
-Buyer beware
-
-All of these install scripts have been tested to Ubuntu 16.04.
-
-## Installation (Ubuntu 16.04)
-
-Install deps
-
-sudo apt-get install build-essential curl python jq vim
+## Installation (macOS)
 
 ```sh
-$ make
+make all-osx
 ```
 
-Install tmux plugins, this is currently manual.
+This symlinks dotfiles into `$HOME`, runs `bin/macos.sh` (Homebrew + casks),
+and installs vim-plug, tmux's TPM, and the Google Cloud SDK.
+
+After install:
 
 ```sh
-$ tmux
-# prefix-key, I
-```
+# tmux plugins (one-time): start tmux, then prefix-key + I (capital i)
+tmux
 
-Restart your shell
-
-```sh
+# pick up the new shell config
 exec -l $SHELL
 ```
 
-Run shellcheck tests
+## Per-machine secrets and overrides
+
+The tracked shell config files source `~/.{exports,aliases,functions}.local`
+at the end if present. These files are gitignored and intended for per-machine
+secrets and overrides. Example `~/.exports.local`:
 
 ```sh
-$ make test
+export GH_TOKEN="ghp_..."
+export JIRA_API_TOKEN="..."
 ```
 
-## Installation (Ubuntu 20.04)
+`~/.npmrc` is also intentionally outside the repo (npm reads it directly) and
+is the right place for `_authToken` lines.
 
-TODO
-
-## Installlation (OSX)
+## Installation (Ubuntu)
 
 ```sh
-$ make all-osx
+sudo apt-get install build-essential curl python3 jq vim
+make
 ```
 
-## Help
+The Linux installer (`bin/install.sh`) targets Ubuntu — the original
+package list was for 16.04 and predates several deprecations. Audit before
+running on a current LTS.
 
-Sometimes in tmux you need to update the GPG_TTY
+## Tests
 
 ```sh
-$ export GPG_TTY=$(tty)
+make test
 ```
 
-## Flyway
+Runs shellcheck via Docker.
 
-https://flywaydb.org/
+## GPG / tmux
 
-## IntelliJ
+If commit signing fails inside tmux:
 
-## Atom.io
+```sh
+export GPG_TTY=$(tty)
+```
+
+## Disabled / archived
+
+The following were once in the bootstrap and are now disabled or moved to
+`attic/`:
+
+- Vundle (`.vimrc.bundles` is now vim-plug; old config in `attic/`)
+- `.bash_prompt` (oh-my-posh now drives the prompt; old config in `attic/`)
+- Travis CI (`attic/travis.yml.disabled`)
+- Flyway / Syncthing in the Linux `tools` target (commented in Makefile)
 
 ## Video (X11)
 
-When using nvidia gpu's and X!! make sure the do the following to ensure that
-settings are saved to the correct config.
-
-Create a xorg.conf file by:
+When using nvidia GPUs and X11, make sure to do the following so settings
+are saved to the correct config:
 
 ```sh
 sudo nvidia-xconfig
 ```
 
-Look for the Section "Device" part in the xorg.conf file And add this line
-inside the section:
+Then in the resulting `xorg.conf`, in the `Section "Device"` block, add:
 
-```sh
+```
 Option "RegistryDwords" "PowerMizerEnable=0x1; PerfLevelSrc=0x3322"
 ```
