@@ -1,10 +1,10 @@
-.PHONY: all all-osx bin check-install-tools check-test-tools check-osx check-linux dotfiles etc test tools tools-osx shellcheck usr
+.PHONY: all all-osx bin bin-osx check-install-tools check-test-tools check-osx check-linux dotfiles etc test tools tools-osx shellcheck usr
 
 PLATFORM := $(shell uname)
 
 all: check-linux check-install-tools bin dotfiles etc usr tools
 
-all-osx: check-osx check-install-tools bin dotfiles tools-osx
+all-osx: check-osx check-install-tools bin-osx dotfiles tools-osx
 
 check-osx:
 	if [ "$(PLATFORM)" != "Darwin" ]; then \
@@ -25,11 +25,21 @@ bin:
 		sudo ln -svfn $$file /usr/local/bin/$$f; \
 	done;
 
-# Tools require to execute the make file.
+# macOS bin: only symlink scripts that are actually invoked from PATH.
+# Most of bin/ is install helpers run as ./bin/X.sh from this Makefile —
+# they don't need to live in /usr/local/bin. The Linux-only ones (XPS-13
+# hardware, dual-boot fixes, apt installers) would just be dead symlinks.
+bin-osx:
+	for file in $(CURDIR)/bin/askpass.sh $(CURDIR)/bin/todo; do \
+		f=$$(basename $$file); \
+		sudo ln -svfn $$file /usr/local/bin/$$f; \
+	done;
+
+# Tools required to execute the make file.
 check-install-tools:
-	command -v curl;
-	command -v python;
-	command -v jq;
+	command -v curl
+	command -v python3
+	command -v jq
 
 # Tool required to run the make test command.
 check-test-tools:
