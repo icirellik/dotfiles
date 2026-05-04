@@ -2,7 +2,13 @@
 set -e
 
 # install.sh
-#  This script installs my basic setup for a debian laptop
+#  This script installs my basic setup for a debian/ubuntu laptop.
+#
+#  WARNING: the package list and PPAs below were last validated on
+#  Ubuntu 16.04 (xenial). Several packages have been renamed or removed
+#  in 20.04+ (e.g. the postgresql apt repo block hardcodes xenial-pgdg
+#  and pulls postgresql-client-9.6, both of which are dead). Audit
+#  before running on a current LTS.
 
 # get the user that is not root
 # TODO: makes a pretty bad assumption that there is only one other user
