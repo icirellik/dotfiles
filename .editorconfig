@@ -1,0 +1,22 @@
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true
+
+[*.{sh,bash,bashrc,bash_profile,exports,aliases,functions,inputrc}]
+indent_style = space
+indent_size = 2
+
+[Makefile]
+indent_style = tab
+
+[*.{md,yml,yaml,json,toml,vim}]
+indent_style = space
+indent_size = 2
+
+[*.lua]
+indent_style = space
+indent_size = 2

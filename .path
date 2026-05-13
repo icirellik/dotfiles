@@ -1,10 +1,44 @@
 #!/bin/bash
 
-# The next line updates PATH for the Google Cloud SDK.
-# source "$HOME/tools/google-cloud-sdk/path.bash.inc"
+# Google Cloud SDK — only source if the dir actually exists. Old installs
+# went under ~/tools/google-cloud-sdk; on macOS, Homebrew puts the SDK
+# under /opt/homebrew/share/google-cloud-sdk.
+for gcloud_root in "$HOME/tools/google-cloud-sdk" "/opt/homebrew/share/google-cloud-sdk"; do
+  if [ -d "$gcloud_root" ]; then
+    # shellcheck source=/dev/null
+    [ -f "$gcloud_root/path.bash.inc" ] && . "$gcloud_root/path.bash.inc"
+    # shellcheck source=/dev/null
+    [ -f "$gcloud_root/completion.bash.inc" ] && . "$gcloud_root/completion.bash.inc"
+    break
+  fi
+done
+unset gcloud_root
 
-# The next line enables shell command completion for gcloud.
-# shellcheck source=/dev/null
-source "$HOME/tools/google-cloud-sdk/completion.bash.inc"
+# PATH additions — only append entries whose directory exists.
+_path_append() {
+  if [ -d "$1" ]; then
+    case ":$PATH:" in
+      *":$1:"*) ;;
+      *) export PATH="$PATH:$1" ;;
+    esac
+  fi
+}
+_path_prepend() {
+  if [ -d "$1" ]; then
+    case ":$PATH:" in
+      *":$1:"*) ;;
+      *) export PATH="$1:$PATH" ;;
+    esac
+  fi
+}
 
-export PATH=/usr/local/bin:/usr/local/go/bin:$PATH:$GOPATH/bin:/usr/share/bcc/tools:/sbin:$HOME/tools/google-cloud-sdk/bin:$HOME/tools/node/bin:$HOME/tools/flyway/
+_path_prepend "/usr/local/bin"
+_path_append "/usr/local/go/bin"
+[ -n "${GOPATH:-}" ] && _path_append "$GOPATH/bin"
+_path_append "/usr/share/bcc/tools"
+_path_append "/sbin"
+_path_append "$HOME/tools/google-cloud-sdk/bin"
+_path_append "$HOME/tools/node/bin"
+_path_append "$HOME/tools/flyway"
+
+unset -f _path_append _path_prepend

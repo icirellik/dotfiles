@@ -13,7 +13,7 @@
 
   # Push origin HEAD.
   poh = push origin HEAD
-  
+
   # Push origin HEAD no verify.
   pohv = push origin HEAD --no-verify
 
@@ -38,6 +38,39 @@
   # Apply a fix for GPG interactive tty's
   cm-gpg = !GPG_TTY=$(tty) git commit
 
+  gone = "!f() { \
+        main=${1:-main}; \
+        git checkout -q \"$main\" 2>/dev/null; \
+        git for-each-ref refs/heads/ --format='%(refname:short)' | while read branch; do \
+            [ \"$branch\" = \"$main\" ] && continue; \
+            mergeBase=$(git merge-base \"$main\" \"$branch\" 2>/dev/null) || continue; \
+            tree=$(git rev-parse \"$branch^{tree}\"); \
+            tempCommit=$(git commit-tree \"$tree\" -p \"$mergeBase\" -m _); \
+            if [ \"$(git cherry \"$main\" \"$tempCommit\" 2>/dev/null)\" = \"- $tempCommit\" ]; then \
+                echo \"$branch\"; \
+            fi; \
+        done; \
+    }; f"
+
+    prune-merged = "!f() { \
+        main=${1:-main}; \
+        branches=$(git gone \"$main\"); \
+        if [ -z \"$branches\" ]; then \
+            echo 'No squash-merged branches found.'; \
+            return 0; \
+        fi; \
+        echo 'Branches squash-merged into '\"$main\"':'; \
+        echo \"$branches\"; \
+        echo ''; \
+        printf 'Delete these branches? [y/N] '; \
+        read confirm; \
+        if [ \"$confirm\" = 'y' ] || [ \"$confirm\" = 'Y' ]; then \
+            echo \"$branches\" | xargs git branch -D; \
+        else \
+            echo 'Aborted.'; \
+        fi; \
+    }; f"
+
 [apply]
 
   # Detect whitespace errors when applying a patch
@@ -58,6 +91,18 @@
   # More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
   # trustctime = false
   editor = vim
+  pager = delta
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  navigate = true
+  line-numbers = true
+  syntax-theme = Monokai Extended
+
+[merge]
+  conflictstyle = zdiff3
 
 [color]
 
@@ -96,7 +141,10 @@
 
 
 [diff]
-  tool = meld
+  algorithm = histogram
+  colorMoved = plain
+  mnemonicPrefix = true
+  renames = true
 
 # Uncomment if you want fetch to also get all github pull requests, this is rather
 # large on big repos.
@@ -128,3 +176,16 @@
 
 [includeIf "gitdir:~/code/artsy/"]
   path = .gitconfig.artsy
+
+[includeIf "gitdir:~/code/level20/"]
+  path = .gitconfig.level20
+
+[includeIf "gitdir:~/code/plumber/"]
+  path = .gitconfig.level20
+
+[push]
+	autoSetupRemote = true
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate

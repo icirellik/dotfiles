@@ -1,8 +1,18 @@
-Bundle 'artur-shaik/vim-javacomplete2'
-Bundle 'edkolev/promptline.vim'
-Bundle 'neomake/neomake'
-Bundle 'sbdchd/neoformat'
-Bundle 'shougo/unite.vim'
-Bundle 'shougo/vimfiler.vim'
-Plugin 'bling/vim-airline'
-Plugin 'dracula/vim'
+Plug 'artur-shaik/vim-javacomplete2'
+Plug 'edkolev/promptline.vim'
+Plug 'neomake/neomake'
+Plug 'sbdchd/neoformat'
+Plug 'shougo/unite.vim'
+Plug 'shougo/vimfiler.vim'
+Plug 'bling/vim-airline'
+Plug 'dracula/vim'
+
+" Auto-detect indent settings per file
+Plug 'tpope/vim-sleuth'
+
+" Apply .editorconfig rules
+Plug 'editorconfig/editorconfig-vim'
+
+" fzf integration (the fzf binary itself is installed via Homebrew)
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'

@@ -1,10 +1,10 @@
-.PHONY: all all-osx bin check-install-tools check-test-tools check-osx check-linux dotfiles etc test tools shellcheck usr
+.PHONY: all all-osx bin bin-osx check-install-tools check-test-tools check-osx check-linux dotfiles etc test tools tools-osx shellcheck usr
 
 PLATFORM := $(shell uname)
 
 all: check-linux check-install-tools bin dotfiles etc usr tools
 
-all-osx: check-osx check-install-tools bin dotfiles tools
+all-osx: check-osx check-install-tools bin-osx dotfiles tools-osx
 
 check-osx:
 	if [ "$(PLATFORM)" != "Darwin" ]; then \
@@ -25,25 +25,54 @@ bin:
 		sudo ln -svfn $$file /usr/local/bin/$$f; \
 	done;
 
-# Tools require to execute the make file.
+# macOS bin: only symlink scripts that are actually invoked from PATH.
+# Most of bin/ is install helpers run as ./bin/X.sh from this Makefile —
+# they don't need to live in /usr/local/bin. The Linux-only ones (XPS-13
+# hardware, dual-boot fixes, apt installers) would just be dead symlinks.
+bin-osx:
+	for file in $(CURDIR)/bin/askpass.sh $(CURDIR)/bin/todo; do \
+		f=$$(basename $$file); \
+		sudo ln -svfn $$file /usr/local/bin/$$f; \
+	done;
+
+# Tools required to execute the make file.
 check-install-tools:
-	command -v curl;
-	command -v python;
-	command -v jq;
+	command -v curl
+	command -v python3
+	command -v jq
 
 # Tool required to run the make test command.
 check-test-tools:
 	command -v docker;
 
 dotfiles:
-	# add aliases for dotfiles
-	# exclude the config directory as it will already exist and contains many files.
-	for file in $(shell find $(CURDIR) -name ".*" -not -name ".gitignore" -not -name ".travis.yml" -not -name ".git" -not -name ".dotfiles" -not -name ".config" -not -name ".*.swp"); do \
+	# Symlink top-level dotfiles into $$HOME.
+	# -maxdepth 1: only top-level entries (don't descend into attic/.gitkeep etc)
+	# Excludes:
+	#   .gitignore, .editorconfig, .travis.yml — repo metadata, not dotfiles
+	#   .git, .dotfiles, .config — special handling
+	#   .claude — Claude Code session state, must not leak into ~
+	#   .DS_Store — macOS junk
+	#   .npmrc — must not symlink the empty repo file over ~/.npmrc (which
+	#            holds tokens). npm reads ~/.npmrc directly.
+	for file in $(shell find $(CURDIR) -maxdepth 1 -name ".*" \
+		-not -name ".gitignore" \
+		-not -name ".editorconfig" \
+		-not -name ".travis.yml" \
+		-not -name ".git" \
+		-not -name ".dotfiles" \
+		-not -name ".config" \
+		-not -name ".claude" \
+		-not -name ".DS_Store" \
+		-not -name ".npmrc" \
+		-not -name ".*.swp"); do \
 		f=$$(basename $$file); \
 		ln -sfn $$file $(HOME)/$$f; \
 	done;
 	mkdir -p $(HOME)/.config/Code/User
 	ln -sfn $(CURDIR)/.config/Code/User/settings.json $(HOME)/.config/Code/User/settings.json
+	mkdir -p $(HOME)/.config/alacritty
+	ln -sfn $(CURDIR)/.config/alacritty/alacritty.toml $(HOME)/.config/alacritty/alacritty.toml
 
 etc:
 	echo "etc";
@@ -64,17 +93,32 @@ usr:
 
 test: check-test-tools shellcheck
 
+# macOS tools: vim-plug + tpm. git comes from Homebrew (bin/macos.sh).
+tools-osx:
+	# Install vim-plug if not already present, then install plugins
+	if [ ! -f "$(HOME)/.vim/autoload/plug.vim" ]; then \
+		curl -fLo $(HOME)/.vim/autoload/plug.vim --create-dirs \
+			https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim; \
+	fi;
+	vim +PlugInstall +qall
+	# Install tmux plugin manager
+	if [ ! -d "$(HOME)/.tmux/plugins/tpm" ]; then \
+		git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm; \
+	fi
+
+# Linux tools.
 tools:
 	# Install git
 	./bin/git.sh
-	# Install vim plugins
-	if [ ! -d "$(HOME)/.vim/bundle" ]; then \
-		git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim; \
-		vim +PluginInstall +qall; \
+	# Install vim-plug if not already present, then install plugins
+	if [ ! -f "$(HOME)/.vim/autoload/plug.vim" ]; then \
+		curl -fLo $(HOME)/.vim/autoload/plug.vim --create-dirs \
+			https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim; \
 	fi;
+	vim +PlugInstall +qall
 	# Install tmux plugin manager
 	if [ ! -d "$(HOME)/.tmux/plugins/tpm" ]; then \
-		git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm; \
+		git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm; \
 	fi
 	# Make the tools directory
 	if [ ! -d "$(HOME)/tools" ]; then \
@@ -82,28 +126,30 @@ tools:
 	fi;
 	# Install Google Cloud SDK
 	./bin/google-cloud-sdk.sh
-	# Install node
-	./bin/node.sh
-	# Install flyway
-	if [ ! -d "$(HOME)/tools/flyway" ]; then \
-		curl -s -o /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/4.1.2/flyway-commandline-4.1.2-linux-x64.tar.gz; \
-		tar xf /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz -C $(HOME)/tools; \
-		ln -sf $(HOME)/tools/flyway-4.1.2 $(HOME)/tools/flyway; \
-		rm -f /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz; \
-	fi;
-	# Install syncthing
-	# TODO: Fix the osx install
-	if [ ! -d "$(HOME)/tools/syncthing" ]; then \
-		curl -L -s -o /tmp/syncthing-linux-amd64-v0.14.31.tar.gz https://github.com/syncthing/syncthing/releases/download/v0.14.31/syncthing-linux-amd64-v0.14.31.tar.gz; \
-		tar xf /tmp/syncthing-linux-amd64-v0.14.31.tar.gz -C $(HOME)/tools; \
-		ln -sf $(HOME)/tools/syncthing-linux-amd64-v0.14.31 $(HOME)/tools/syncthing; \
-		rm -f /tmp/syncthing-linux-amd64-v0.14.31.tar.gz; \
-		sudo ln -sf $(HOME)/tools/syncthing/syncthing /usr/local/bin/syncthing; \
-		sudo cp -f --remove-destination etc/systemd/system/syncthing@.service /etc/systemd/system/; \
-		sudo systemctl daemon-reload; \
-		sudo systemctl enable "syncthing@$$USER"; \
-		sudo systemctl start "syncthing@$$USER"; \
-	fi;
+	# Node install — disabled. NVM (in .exports) is the source of truth on
+	# macOS; for Linux, install nvm or use the system package manager.
+	#./bin/node.sh
+	# Flyway install — disabled. Pinned to v4.1.2 (2017); install on demand
+	# from https://flywaydb.org/ if you actually need it.
+	#if [ ! -d "$(HOME)/tools/flyway" ]; then \
+	#	curl -s -o /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/4.1.2/flyway-commandline-4.1.2-linux-x64.tar.gz; \
+	#	tar xf /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz -C $(HOME)/tools; \
+	#	ln -sf $(HOME)/tools/flyway-4.1.2 $(HOME)/tools/flyway; \
+	#	rm -f /tmp/flyway-commandline-4.1.2-linux-x64.tar.gz; \
+	#fi;
+	# Syncthing install — disabled. Pinned to v0.14.31 (2017); use the
+	# system package manager or install on demand if needed.
+	#if [ ! -d "$(HOME)/tools/syncthing" ]; then \
+	#	curl -L -s -o /tmp/syncthing-linux-amd64-v0.14.31.tar.gz https://github.com/syncthing/syncthing/releases/download/v0.14.31/syncthing-linux-amd64-v0.14.31.tar.gz; \
+	#	tar xf /tmp/syncthing-linux-amd64-v0.14.31.tar.gz -C $(HOME)/tools; \
+	#	ln -sf $(HOME)/tools/syncthing-linux-amd64-v0.14.31 $(HOME)/tools/syncthing; \
+	#	rm -f /tmp/syncthing-linux-amd64-v0.14.31.tar.gz; \
+	#	sudo ln -sf $(HOME)/tools/syncthing/syncthing /usr/local/bin/syncthing; \
+	#	sudo cp -f --remove-destination etc/systemd/system/syncthing@.service /etc/systemd/system/; \
+	#	sudo systemctl daemon-reload; \
+	#	sudo systemctl enable "syncthing@$$USER"; \
+	#	sudo systemctl start "syncthing@$$USER"; \
+	#fi;
 
 # if this session isn't interactive, then we don't want to allocate a
 # TTY, which would fail, but if it is interactive, we do want to attach

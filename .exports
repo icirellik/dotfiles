@@ -6,32 +6,33 @@ if is_osx; then
 fi
 
 # Make vim the default editor
-export EDITOR=/usr/bin/vim;
-# export TERMINAL="urxvt";
+export EDITOR=/usr/bin/vim
 
 # Larger bash history (allow 32³ entries; default is 500)
-export HISTSIZE=50000000;
-export HISTFILESIZE=$HISTSIZE;
-export HISTCONTROL=ignoredups;
+export HISTSIZE=50000000
+export HISTFILESIZE=$HISTSIZE
+export HISTCONTROL=ignoredups
 # Make some commands not show up in history
-export HISTIGNORE=" *:ls:cd:cd -:pwd:exit:date:* --help:* ls *";
+export HISTIGNORE=" *:ls:cd:cd -:pwd:exit:date:* --help:* ls *"
 
 # Prefer US English and use UTF-8
-export LANG="en_US.UTF-8";
-export LC_ALL="en_US.UTF-8";
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
 
-# Don’t clear the screen after quitting a manual page
-export MANPAGER="less -X";
-
-export DBUS_SESSION_BUS_ADDRESS
-DBUS_SESSION_BUS_ADDRESS=unix:path=/var/run/user/$(id -u)/bus;
+# Don't clear the screen after quitting a manual page
+export MANPAGER="less -X"
 
 export TODOTXT_DEFAULT_ACTION=ls
 
-# hidpi for gtk apps
-export GDK_SCALE=2
-export GDK_DPI_SCALE=0.5
-export QT_DEVICE_PIXEL_RATIO=2
+# Linux-only environment (GTK/Qt scaling, DBus session bus)
+if ! is_osx; then
+  export DBUS_SESSION_BUS_ADDRESS
+  DBUS_SESSION_BUS_ADDRESS=unix:path=/var/run/user/$(id -u)/bus
+  # hidpi for gtk apps
+  export GDK_SCALE=2
+  export GDK_DPI_SCALE=0.5
+  export QT_DEVICE_PIXEL_RATIO=2
+fi
 
 # Must be disabled to allow gcr.io to function correctly
 export DOCKER_CONTENT_TRUST=0
@@ -49,8 +50,23 @@ else
 fi
 export NODE_ENV="development"
 
+# pnpm
+if [ -d "$HOME/Library/pnpm" ]; then
+  export PNPM_HOME="$HOME/Library/pnpm"
+  case ":$PATH:" in
+    *":$PNPM_HOME:"*) ;;
+    *) export PATH="$PNPM_HOME:$PATH" ;;
+  esac
+fi
+
+# Python via Homebrew (Apple Silicon)
+if is_osx && [ -d "/opt/homebrew/opt/python@3.13/libexec/bin" ]; then
+  export PATH="/opt/homebrew/opt/python@3.13/libexec/bin:$PATH"
+fi
+
 # Default Git Branch
 export DEFAULT_GIT_BRANCH=main
 
-# Lastpass
-export LPASS_ASKPASS=/usr/local/bin/askpass.sh
+# Per-machine secrets and overrides (gitignored)
+# shellcheck source=/dev/null
+[ -f "$HOME/.exports.local" ] && . "$HOME/.exports.local"

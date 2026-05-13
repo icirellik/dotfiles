@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Bash script silently installing osx applications.
+# Bash script silently installing macOS applications.
 #
 # Author: Cameron Rollheiser <icirellik@gmail.com>
 
@@ -36,7 +36,7 @@ brews() {
   brew install git-lfs
   brew install gnu-sed
   brew install gnuplot
-  brew install go
+  # brew install go
   brew install gpg
   brew install hh
   brew install htop
@@ -56,14 +56,21 @@ brews() {
   brew install pv
   brew install ranger
   brew install sbt
-  brew install stormssh
-  brew install syncthing
+  # brew install stormssh
+  # brew install syncthing
   brew install thefuck
   brew install tmux
   brew install trash
   brew install tree
   brew install vim
   brew install wget
+
+  # Modern CLI tools
+  brew install delta       # syntax-highlighted git diffs (wired into .gitconfig)
+  brew install direnv      # per-directory env vars; great for project secrets
+  brew install gh          # GitHub CLI (PRs, issues, releases from the terminal)
+  brew install mise        # runtime version manager (replaces nvm; adds python/ruby/go)
+  brew install ripgrep     # fast grep replacement; .vimrc grep config can fall back to it
 }
 
 # Things I don't want auto installed
@@ -76,27 +83,35 @@ brews() {
 # sidekick
 # visual-studio-code
 casks() {
-  echo "Install software"
-  brew tap homebrew/cask-versions
+  echo "Install software (casks)"
 
-  brew cask install airdroid
-  brew cask install commander-one
-  brew cask install geekbench
-  brew cask install iina
-  brew cask install licecap
-  brew cask install macdown
-  brew cask install muzzle
-  brew cask install private-eye
-  brew cask install qlcolorcode
-  brew cask install qlimagesize
-  brew cask install qlmarkdown
-  brew cask install qlstephen
-  brew cask install qlvideo
-  brew cask install quicklook-csv
-  brew cask install quicklook-json
-  brew cask install quicklookase
-  brew cask install suspicious-package
-  brew cask install webpquicklook
+  # Note: `brew cask install` was removed in Homebrew 2.6 (Dec 2020).
+  # Use `brew install --cask <name>` instead.
+  brew install muzzle --cask
+  brew install suspicious-package --cask
+
+  # Other casks I've used; uncomment as needed.
+  # brew install airdroid --cask
+  # brew install commander-one --cask
+  # brew install geekbench --cask
+  # brew install iina --cask
+  # brew install licecap --cask
+  # brew install macdown --cask
+  # brew install private-eye --cask
+  # brew install qlcolorcode --cask
+  # brew install qlimagesize --cask
+  # brew install qlmarkdown --cask
+  # brew install qlstephen --cask
+  # brew install qlvideo --cask
+  # brew install quicklook-csv --cask
+  # brew install quicklook-json --cask
+  # brew install quicklookase --cask
+  # brew install webpquicklook --cask
+}
+
+awesome_apps() {
+  echo "These are awesome apps, please check them out"
+  echo "DBeaver"
 }
 
 pips() {
@@ -115,7 +130,7 @@ main() {
     xcode-select --install
 
     echo "Install Homebrew"
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   else
     echo "Update Homebrew"
     brew update
@@ -123,8 +138,8 @@ main() {
   fi
   brew doctor
 
-  echo "Install Java"
-  brew cask install java
+  echo "Install Terminal"
+  brew install alacritty --cask
 
   brews
   casks
@@ -133,9 +148,6 @@ main() {
 
   echo "Cleanup"
   brew cleanup
-
-  echo "Colors"
-  git clone git@github.com:dracula/iterm ~/.itermcolors
 
   echo "Done!"
 }

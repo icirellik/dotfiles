@@ -1,0 +1,8 @@
+Bundle 'artur-shaik/vim-javacomplete2'
+Bundle 'edkolev/promptline.vim'
+Bundle 'neomake/neomake'
+Bundle 'sbdchd/neoformat'
+Bundle 'shougo/unite.vim'
+Bundle 'shougo/vimfiler.vim'
+Plugin 'bling/vim-airline'
+Plugin 'dracula/vim'
